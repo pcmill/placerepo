@@ -1,5 +1,5 @@
 table continent {
-  id varchar(6) [PK]
+  id varchar(2) [PK]
   name varchar(64) [not null]
   created timestamp [not null]
   updated timestamp
@@ -7,7 +7,7 @@ table continent {
 }
 
 table continent_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -17,7 +17,7 @@ table continent_translation {
 }
 
 table country {
-  id varchar(8) [PK]
+  id varchar(4) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -27,7 +27,7 @@ table country {
 }
 
 table country_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -37,17 +37,19 @@ table country_translation {
 }
 
 table admin1 {
-  id varchar(10) [PK]
+  id varchar(6) [PK]
   name varchar(128)
   created timestamp [not null]
   updated timestamp
+  latitude decimal(8,6) [not null]
+  longitude decimal(9,6) [not null]
   polygon text
   country_id varchar(4)
   prefix smallint [not null]
 }
 
 table admin1_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -57,17 +59,19 @@ table admin1_translation {
 }
 
 table admin2 {
-  id varchar(10) [PK]
+  id varchar(6) [PK]
   name varchar(128)
   created timestamp [not null]
   updated timestamp
   polygon text
+  latitude decimal(8,6) [not null]
+  longitude decimal(9,6) [not null]
   country_id varchar(4)
   prefix smallint [not null]
 }
 
 table admin2_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -77,27 +81,31 @@ table admin2_translation {
 }
 
 table admin3 {
-  id varchar(10) [PK]
+  id varchar(6) [PK]
   name varchar(128)
   created timestamp [not null]
   updated timestamp
   polygon text
+  latitude decimal(8,6) [not null]
+  longitude decimal(9,6) [not null]
   country_id varchar(4)
   prefix smallint [not null]
 }
 
 table admin4 {
-  id varchar(10) [PK]
+  id varchar(6) [PK]
   name varchar(128)
   created timestamp [not null]
   updated timestamp
   polygon text
+  latitude decimal(8,6) [not null]
+  longitude decimal(9,6) [not null]
   country_id varchar(4)
   prefix smallint [not null]
 }
 
 table place {
-  id varchar(12) [PK]
+  id varchar(8) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -117,7 +125,7 @@ table place {
 }
 
 table place_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -127,17 +135,19 @@ table place_translation {
 }
 
 table neighbourhood {
-  id varchar(14) [PK]
+  id varchar(10) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
+  latitude decimal(8,6) [not null]
+  longitude decimal(9,6) [not null]
   polygon text
   place_id varchar(8) [not null]
   prefix smallint [not null]
 }
 
 table neighbourhood_translation {
-  id varchar(16) [PK]
+  id varchar(12) [PK]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
@@ -148,7 +158,7 @@ table neighbourhood_translation {
 }
 
 table postal_code {
-  id varchar(14) [PK]
+  id varchar(10) [PK]
   name varchar(20) [not null]
   created timestamp [not null]
   updated timestamp
@@ -161,20 +171,20 @@ table postal_code {
 
 table prefix {
   id smallint [PK]
-  name varchar(3)
+  name varchar(3) [not null]
 }
 
-Ref: "country"."continent_id" - "continent"."id"
-Ref: "place"."country_id" - "country"."id"
-Ref: "postal_code"."country_id" - "country"."id"
-Ref: "admin1"."country_id" - "country"."id"
-Ref: "admin2"."country_id" - "country"."id"
-Ref: "admin3"."country_id" - "country"."id"
-Ref: "admin4"."country_id" - "country"."id"
-Ref: "admin1_translation"."admin1_id" - "admin1"."id"
-Ref: "admin2_translation"."admin2_id" - "admin2"."id"
-Ref: "neighbourhood"."place_id" - "place"."id"
-Ref: "place_translation"."place_id" - "place"."id"
-Ref: "country_translation"."country_id" - "country"."id"
-Ref: "continent_translation"."continent_id" - "continent"."id"
-Ref: "neighbourhood_translation"."neighbourhood_id" - "neighbourhood"."id"
+Ref: "country"."continent_id" > "continent"."id"
+Ref: "place"."country_id" > "country"."id"
+Ref: "postal_code"."country_id" > "country"."id"
+Ref: "admin1"."country_id" > "country"."id"
+Ref: "admin2"."country_id" > "country"."id"
+Ref: "admin3"."country_id" > "country"."id"
+Ref: "admin4"."country_id" > "country"."id"
+Ref: "admin1_translation"."admin1_id" > "admin1"."id"
+Ref: "admin2_translation"."admin2_id" > "admin2"."id"
+Ref: "neighbourhood"."place_id" > "place"."id"
+Ref: "place_translation"."place_id" > "place"."id"
+Ref: "country_translation"."country_id" > "country"."id"
+Ref: "continent_translation"."continent_id" > "continent"."id"
+Ref: "neighbourhood_translation"."neighbourhood_id" > "neighbourhood"."id"
