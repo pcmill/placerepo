@@ -9,7 +9,7 @@ It includes the following entities:
 - Neighbourhoods
 - Postal codes
 - Admin levels 1 - 4
-- Translations for all entities except postal codes, admin3 and admin4
+- Translations for all entities except postal codes
 
 The goal is to be either:
 - A drop-in database model and dataset, currently targeted at Postgres.
@@ -26,18 +26,17 @@ PlaceRepo also does not contain all the entities that Geonames does support such
 PlaceRepo uses the following structure for the ID's of every entity:
 - 20 lowercase letters (syllables removed) and 10 numbers, 30 in total.
 - Depending on the entity between the ID is 2 and 12 characters long.
-- A prefix on every entity of 3 letters seperated by a dash to make it URL safe.
 
 Examples:
-- continent: `con-sh`
-- country: `cou-3d0j`
-- admin1 `ad1-cwq3p9`
-- place: `pla-xhy2s8qw`
-- neighbourhood: `nei-60drlgkbrjyz`
+- continent: `sh` (2 chars long)
+- country: `3d0j` (4 chars long)
+- admin1 `cwq3p9` (6 chars long)
+- place: `xhy2s8qw` (8 chars long)
+- neighbourhood: `60drlgkbrjyz` (12 chars long)
 
-The prefix is included in every record in the database, to save space it is in a seperate table.
+### Why the translation table references?
 
-If you don't want to use the prefixes it should be safe to go without since on insert every ID is checked to be unique within its table.
+In almost every entity there is a reference to a `default_translation`. This is in an effort to reduce data duplication. The translation it refers to should be a generally recognizable name. For continents and countries this is the English translation. For places usually the anglicized version of the name so it is easier for everyone to work on the dataset. Ofcourse the original names are in the translation tables as well.
 
 ### What are the polygons for?
 

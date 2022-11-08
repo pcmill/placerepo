@@ -1,112 +1,120 @@
 table continent {
-  id varchar(2) [PK]
-  name varchar(64) [not null]
+  id varchar(2) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
-  prefix smallint [not null]
 }
 
 table continent_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(7) [not null]
   continent_id varchar(2) [not null]
-  prefix smallint [not null]
 }
 
 table country {
-  id varchar(4) [PK]
-  name varchar(128) [not null]
+  id varchar(4) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   country_code varchar(2) [not null]
   continent_id varchar(2) [not null]
-  prefix smallint [not null]
 }
 
 table country_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(7) [not null]
   country_id varchar(4) [not null]
-  prefix smallint [not null]
 }
 
 table admin1 {
-  id varchar(6) [PK]
-  name varchar(128)
+  id varchar(6) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   polygon text
-  country_id varchar(4)
-  prefix smallint [not null]
+  country_id varchar(4) [not null]
 }
 
 table admin1_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(7) [not null]
   admin1_id varchar(6) [not null]
-  prefix smallint [not null]
 }
 
 table admin2 {
-  id varchar(6) [PK]
-  name varchar(128)
+  id varchar(6) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   polygon text
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
-  country_id varchar(4)
-  prefix smallint [not null]
+  country_id varchar(4) [not null]
 }
 
 table admin2_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(7) [not null]
   admin2_id varchar(6) [not null]
-  prefix smallint [not null]
 }
 
 table admin3 {
-  id varchar(6) [PK]
-  name varchar(128)
+  id varchar(6) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   polygon text
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
-  country_id varchar(4)
-  prefix smallint [not null]
+  country_id varchar(4) [not null]
+}
+
+table admin3_translation {
+  id varchar(12) [PK, unique]
+  name varchar(128) [not null]
+  created timestamp [not null]
+  updated timestamp
+  language_code varchar(7) [not null]
+  admin3_id varchar(6) [not null]
 }
 
 table admin4 {
-  id varchar(6) [PK]
-  name varchar(128)
+  id varchar(6) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   polygon text
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
-  country_id varchar(4)
-  prefix smallint [not null]
+  country_id varchar(4) [not null]
+}
+
+table admin4_translation {
+  id varchar(12) [PK, unique]
+  name varchar(128) [not null]
+  created timestamp [not null]
+  updated timestamp
+  language_code varchar(7) [not null]
+  admin4_id varchar(6) [not null]
 }
 
 table place {
-  id varchar(8) [PK]
-  name varchar(128) [not null]
+  id varchar(8) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   latitude decimal(8,6) [not null]
@@ -121,57 +129,47 @@ table place {
   admin3 varchar(6)
   admin4 varchar(6)
   country_id varchar(4) [not null]
-  prefix smallint [not null]
 }
 
 table place_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(7) [not null]
   place_id varchar(8) [not null]
-  prefix smallint [not null]
 }
 
 table neighbourhood {
-  id varchar(10) [PK]
-  name varchar(128) [not null]
+  id varchar(10) [PK, unique]
+  default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   polygon text
   place_id varchar(8) [not null]
-  prefix smallint [not null]
 }
 
 table neighbourhood_translation {
-  id varchar(12) [PK]
+  id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   population integer
   language_code varchar(7) [not null]
   neighbourhood_id varchar(10) [not null]
-  prefix smallint [not null]
 }
 
 table postal_code {
-  id varchar(10) [PK]
-  name varchar(20) [not null]
+  id varchar(10) [PK, unique]
+  code varchar(20) [not null]
   created timestamp [not null]
   updated timestamp
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   polygon text
   country_id varchar(4) [not null]
-  prefix smallint [not null]
-}
-
-table prefix {
-  id smallint [PK]
-  name varchar(3) [not null]
 }
 
 Ref: "country"."continent_id" > "continent"."id"
@@ -188,3 +186,14 @@ Ref: "place_translation"."place_id" > "place"."id"
 Ref: "country_translation"."country_id" > "country"."id"
 Ref: "continent_translation"."continent_id" > "continent"."id"
 Ref: "neighbourhood_translation"."neighbourhood_id" > "neighbourhood"."id"
+
+Ref: "continent_translation"."id" < "continent"."default_translation"
+Ref: "country_translation"."id" < "country"."default_translation"
+Ref: "admin1_translation"."id" < "admin1"."default_translation"
+Ref: "admin2_translation"."id" < "admin2"."default_translation"
+Ref: "admin3"."id" < "admin3_translation"."admin3_id"
+Ref: "admin3_translation"."id" < "admin3"."default_translation"
+Ref: "admin4_translation"."id" < "admin4"."default_translation"
+Ref: "admin4"."id" < "admin4_translation"."admin4_id"
+Ref: "place_translation"."id" < "place"."default_translation"
+Ref: "neighbourhood_translation"."id" < "neighbourhood"."default_translation"
