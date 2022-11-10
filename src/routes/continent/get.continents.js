@@ -11,12 +11,12 @@ async function getContinents(req, res, next) {
             continents = await getContinentByDefault(client);    
         }
 
-        client.release();
-
         res.status(200);
         res.send(continents);
     } catch (error) {
         next(error);
+    } finally {
+        client.release();
     }
 }
 

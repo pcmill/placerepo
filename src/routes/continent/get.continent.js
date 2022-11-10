@@ -13,8 +13,6 @@ async function getContinent(req, res, next) {
 
         const translations = await client.query(`SELECT id, name, created, updated, language_code FROM continent_translation WHERE continent_id = $1`, [req.params.id]);
 
-        client.release();
-
         res.status(200);
         res.send({
             ...continent.rows[0],
@@ -22,6 +20,8 @@ async function getContinent(req, res, next) {
         });
     } catch (error) {
         next(error);
+    } finally {
+        client.release();
     }
 }
 
