@@ -1,10 +1,14 @@
 import express from 'express';
+import getContinent from './routes/continent/get.continent.js';
+import getContinents from './routes/continent/get.continents.js';
 const router = express.Router();
 
-import test from './routes/test.js';
+router.get('/continent', (req, res, next) => {
+    getContinents(req, res, next);
+});
 
-router.get('/test', (req, res, next) => {
-    test(req, res, next);
+router.get('/continent/:id', (req, res, next) => {
+    getContinent(req, res, next);
 });
 
 // All other routes get 404.
