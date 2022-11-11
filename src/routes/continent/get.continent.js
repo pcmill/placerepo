@@ -1,8 +1,9 @@
 import { getClient } from "../../database/connection.js";
 
 async function getContinent(req, res, next) {
+    const client = await getClient();
+    
     try {
-        const client = await getClient();
 
         // check if the id exists
         const continent = await client.query(`SELECT * FROM continent WHERE id = $1`, [req.params.id]);

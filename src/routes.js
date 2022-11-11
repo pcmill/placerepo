@@ -1,29 +1,55 @@
 import express from 'express';
+import { checkApiKey } from './middlewares/apikey.js';
 import removeContinentTranslation from './routes/continent/delete.continent.translation.js';
 import getContinent from './routes/continent/get.continent.js';
 import getContinents from './routes/continent/get.continents.js';
 import addContinentTranslation from './routes/continent/post.continent.translation.js';
 import updateContinentTranslation from './routes/continent/put.continent.translation.js';
+import removeCountryTranslation from './routes/country/delete.country.translation.js';
+import getCountries from './routes/country/get.countries.js';
+import getCountry from './routes/country/get.country.js';
+import addCountry from './routes/country/post.country.js';
+import addCountryTranslation from './routes/country/post.country.translation.js';
 const router = express.Router();
 
-router.get('/continent', (req, res, next) => {
+router.get('/continent', checkApiKey, (req, res, next) => {
     getContinents(req, res, next);
 });
 
-router.get('/continent/:id', (req, res, next) => {
+router.get('/continent/:id', checkApiKey, (req, res, next) => {
     getContinent(req, res, next);
 });
 
-router.post('/continent/translation', (req, res, next) => {
+router.post('/continent/translation', checkApiKey, (req, res, next) => {
     addContinentTranslation(req, res, next);
 });
 
-router.put('/continent/translation', (req, res, next) => {
+router.put('/continent/translation', checkApiKey, (req, res, next) => {
     updateContinentTranslation(req, res, next);
 });
 
-router.delete('/continent/translation/:id', (req, res, next) => {
+router.delete('/continent/translation/:id', checkApiKey, (req, res, next) => {
     removeContinentTranslation(req, res, next);
+});
+
+router.post('/country', checkApiKey, (req, res, next) => {
+    addCountry(req, res, next);
+});
+
+router.post('/country/translation', checkApiKey, (req, res, next) => {
+    addCountryTranslation(req, res, next);
+});
+
+router.get('/country/:id', checkApiKey, (req, res, next) => {
+    getCountry(req, res, next);
+});
+
+router.get('/country', checkApiKey, (req, res, next) => {
+    getCountries(req, res, next);
+});
+
+router.delete('/country/translation/:id', checkApiKey, (req, res, next) => {
+    removeCountryTranslation(req, res, next);
 });
 
 // All other routes get 404.

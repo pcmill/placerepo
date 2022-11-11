@@ -1,8 +1,9 @@
 import { getClient } from "../../database/connection.js";
 
 async function getContinents(req, res, next) {
+    const client = await getClient();
+    
     try {
-        const client = await getClient();
         let continents = [];
 
         if (req.query.lang) {
