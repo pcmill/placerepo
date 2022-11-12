@@ -21,9 +21,15 @@ async function addCountry(req, res, next) {
             throw({ message: 'This continent was not found!', status: 404 });
         }
 
+        const country_code = await client.query(`SELECT * FROM country WHERE country_code = UPPER($1)`, [req.body.country_code]);
+
+        if (country_code.rows.length > 0) {
+            throw({ message: 'This country code was already used', status: 404 });
+        }
+
         const country = await client.query(`
             INSERT INTO country(id, country_code, continent_id, created)
-            VALUES($1, $2, $3, NOW())
+            VALUES($1, UPPER($2), $3, NOW())
             RETURNING *`, [countryId, req.body.country_code, req.body.continent_id]);
         
         const translation = await client.query(`
