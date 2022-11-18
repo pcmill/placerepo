@@ -19,7 +19,7 @@ CREATE TABLE "country" (
   "default_translation" varchar(12),
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "country_code" varchar(2) NOT NULL,
+  "country_code" varchar(2) UNIQUE NOT NULL,
   "continent_id" varchar(2) NOT NULL
 );
 
@@ -120,6 +120,7 @@ CREATE TABLE "place" (
   "latitude" decimal(8,6) NOT NULL,
   "longitude" decimal(9,6) NOT NULL,
   "population" integer,
+  "population_approximate" boolean DEFAULT false,
   "elevation_meters" integer NOT NULL,
   "polygon" text,
   "wikipedia_id" varchar(20),

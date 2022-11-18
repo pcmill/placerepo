@@ -19,7 +19,7 @@ table country {
   default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
-  country_code varchar(2) [not null]
+  country_code varchar(2) [not null, unique]
   continent_id varchar(2) [not null]
 }
 
@@ -120,6 +120,7 @@ table place {
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   population integer
+  population_approximate boolean [default: false]
   elevation_meters integer [not null]
   polygon text
   wikipedia_id varchar(20)
