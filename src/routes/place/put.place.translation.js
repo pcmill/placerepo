@@ -1,23 +1,20 @@
 import { getClient } from "../../database/connection.js";
-import { randomId } from "../../util/random.js";
 
-async function addContinentTranslation(req, res, next) {
+async function updatePlaceTranslation(req, res, next) {
     const client = await getClient();
 
     try {
-        if (!req.body || !req.body.continent_id || !req.body.name || !req.body.language_code) {
+        if (!req.body || !req.body.name || !req.body.language_code || !req.body.translation_id) {
             throw({ message: 'Missing stuff', status: 400 });
         }
-
-        const translationId = await randomId(12);
 
         await client.query('BEGIN');
 
         // check if the id exists
-        const continent = await client.query(`SELECT * FROM continent WHERE id = $1`, [req.body.id]);
+        const placeTranslation = await client.query(`SELECT * FROM place_translation WHERE id = $1`, [req.body.translation_id]);
 
-        if (!continent.rows) {
-            throw({ message: 'This continent was not found!', status: 404 });
+        if (!placeTranslation.rows) {
+            throw({ message: 'This country translation was not found!', status: 404 });
         }
 
         if (req.body.language_code.length < 2) {
@@ -33,14 +30,15 @@ async function addContinentTranslation(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO continent_translation(id, name, language_code, continent_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.continent_id]);
+            UPDATE place_translation
+            SET name = $1, language_code = $2, updated = NOW()
+            WHERE id = $3`, [req.body.name, req.body.language_code, req.body.translation_id]);
         
         await client.query('COMMIT');
 
-        res.status(201);
+        res.status(200);
         res.send({
-            translation_id: translationId
+            message: 'Done!'
         });
     } catch (error) {
         await client.query('ROLLBACK');
@@ -51,4 +49,4 @@ async function addContinentTranslation(req, res, next) {
     }
 }
 
-export default addContinentTranslation;
+export default updatePlaceTranslation;

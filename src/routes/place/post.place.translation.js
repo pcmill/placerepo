@@ -1,11 +1,11 @@
 import { getClient } from "../../database/connection.js";
 import { randomId } from "../../util/random.js";
 
-async function addContinentTranslation(req, res, next) {
+async function addPlaceTranslation(req, res, next) {
     const client = await getClient();
 
     try {
-        if (!req.body || !req.body.continent_id || !req.body.name || !req.body.language_code) {
+        if (!req.body || !req.body.place_id || !req.body.name || !req.body.language_code) {
             throw({ message: 'Missing stuff', status: 400 });
         }
 
@@ -14,10 +14,10 @@ async function addContinentTranslation(req, res, next) {
         await client.query('BEGIN');
 
         // check if the id exists
-        const continent = await client.query(`SELECT * FROM continent WHERE id = $1`, [req.body.id]);
+        const place = await client.query(`SELECT * FROM place WHERE id = $1`, [req.body.country_id]);
 
-        if (!continent.rows) {
-            throw({ message: 'This continent was not found!', status: 404 });
+        if (!place.rows) {
+            throw({ message: 'This place was not found!', status: 404 });
         }
 
         if (req.body.language_code.length < 2) {
@@ -33,9 +33,9 @@ async function addContinentTranslation(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO continent_translation(id, name, language_code, continent_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.continent_id]);
-        
+            INSERT INTO place_translation(id, name, language_code, place_id, created)
+            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.place_id]);
+
         await client.query('COMMIT');
 
         res.status(201);
@@ -51,4 +51,4 @@ async function addContinentTranslation(req, res, next) {
     }
 }
 
-export default addContinentTranslation;
+export default addPlaceTranslation;

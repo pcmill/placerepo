@@ -40,7 +40,7 @@ async function addCountryTranslation(req, res, next) {
 
         res.status(201);
         res.send({
-            message: 'Done!'
+            translation_id: translationId
         });
     } catch (error) {
         await client.query('ROLLBACK');
