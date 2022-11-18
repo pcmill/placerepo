@@ -21,11 +21,11 @@ import updatePlaceTranslation from './routes/place/put.place.translation.js';
 const router = express.Router();
 
 // CONTINENT
-router.get('/continent', checkApiKey, (req, res, next) => {
+router.get('/continent', (req, res, next) => {
     getContinents(req, res, next);
 });
 
-router.get('/continent/:id', checkApiKey, (req, res, next) => {
+router.get('/continent/:id', (req, res, next) => {
     getContinent(req, res, next);
 });
 
@@ -54,11 +54,11 @@ router.put('/country/translation', checkApiKey, (req, res, next) => {
     updateCountryTranslation(req, res, next);
 });
 
-router.get('/country/:id', checkApiKey, (req, res, next) => {
+router.get('/country/:id', (req, res, next) => {
     getCountry(req, res, next);
 });
 
-router.get('/country', checkApiKey, (req, res, next) => {
+router.get('/country', (req, res, next) => {
     getCountries(req, res, next);
 });
 
@@ -67,7 +67,7 @@ router.delete('/country/translation/:id', checkApiKey, (req, res, next) => {
 });
 
 // PLACE
-router.get('/place/:id', checkApiKey, (req, res, next) => {
+router.get('/place/:id', (req, res, next) => {
     getPlace(req, res, next);
 });
 
@@ -93,7 +93,7 @@ router.post('/admin', checkApiKey, (req, res, next) => {
 });
 
 // OTHER
-router.get('/language', checkApiKey, (req, res, next) => {
+router.get('/language', (req, res, next) => {
     getLanguages(req, res, next);
 });
 
