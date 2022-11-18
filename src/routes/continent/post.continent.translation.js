@@ -20,6 +20,18 @@ async function addContinentTranslation(req, res, next) {
             throw({ message: 'This continent was not found!', status: 404 });
         }
 
+        if (req.body.language_code.length < 2) {
+            throw({ message: 'Language code should be at least 2 characters.', status: 400 });
+        }
+
+        if (req.body.language_code.length > 5) {
+            throw({ message: 'Language code can be no longer than 5 characters.', status: 400 });
+        }
+
+        if (req.body.name.length > 128) {
+            throw({ message: 'Name can be no longer than 128 characters.', status: 400 });
+        }
+
         await client.query(`
             INSERT INTO continent_translation(id, name, language_code, continent_id, created)
             VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.continent_id]);

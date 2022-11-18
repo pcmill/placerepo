@@ -17,6 +17,18 @@ async function updateCountryTranslation(req, res, next) {
             throw({ message: 'This country translation was not found!', status: 404 });
         }
 
+        if (req.body.language_code.length < 2) {
+            throw({ message: 'Language code should be at least 2 characters.', status: 400 });
+        }
+
+        if (req.body.language_code.length > 5) {
+            throw({ message: 'Language code can be no longer than 5 characters.', status: 400 });
+        }
+
+        if (req.body.name.length > 128) {
+            throw({ message: 'Name can be no longer than 128 characters.', status: 400 });
+        }
+
         await client.query(`
             UPDATE country_translation
             SET name = $1, language_code = $2, updated = NOW()

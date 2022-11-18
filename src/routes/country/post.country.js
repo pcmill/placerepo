@@ -27,6 +27,22 @@ async function addCountry(req, res, next) {
             throw({ message: 'This country code was already used', status: 404 });
         }
 
+        if (req.body.language_code.length < 2) {
+            throw({ message: 'Language code should be at least 2 characters.', status: 400 });
+        }
+
+        if (req.body.language_code.length > 5) {
+            throw({ message: 'Language code can be no longer than 5 characters.', status: 400 });
+        }
+
+        if (req.body.name.length > 128) {
+            throw({ message: 'Name can be no longer than 128 characters.', status: 400 });
+        }
+
+        if (req.body.country_code.length !== 2) {
+            throw({ message: 'Country code has to be 2 characters long.', status: 400 });
+        }
+
         const country = await client.query(`
             INSERT INTO country(id, country_code, continent_id, created)
             VALUES($1, UPPER($2), $3, NOW())
