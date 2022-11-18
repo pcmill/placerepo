@@ -10,7 +10,7 @@ CREATE TABLE "continent_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "continent_id" varchar(2) NOT NULL
 );
 
@@ -28,7 +28,7 @@ CREATE TABLE "country_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "country_id" varchar(4) NOT NULL
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE "admin1_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "admin1_id" varchar(6) NOT NULL
 );
 
@@ -68,7 +68,7 @@ CREATE TABLE "admin2_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "admin2_id" varchar(6) NOT NULL
 );
 
@@ -88,7 +88,7 @@ CREATE TABLE "admin3_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "admin3_id" varchar(6) NOT NULL
 );
 
@@ -108,7 +108,7 @@ CREATE TABLE "admin4_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "admin4_id" varchar(6) NOT NULL
 );
 
@@ -137,7 +137,7 @@ CREATE TABLE "place_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "place_id" varchar(8) NOT NULL
 );
 
@@ -158,7 +158,7 @@ CREATE TABLE "neighbourhood_translation" (
   "created" timestamp NOT NULL,
   "updated" timestamp,
   "population" integer,
-  "language_code" varchar(7) NOT NULL,
+  "language_code" varchar(5) NOT NULL,
   "neighbourhood_id" varchar(10) NOT NULL
 );
 
