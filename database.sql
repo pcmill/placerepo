@@ -127,7 +127,7 @@ CREATE TABLE "place" (
   "population_approximate" boolean DEFAULT false,
   "elevation_meters" integer NOT NULL,
   "polygon" text,
-  "wikipedia_id" varchar(20),
+  "wikidata_id" varchar(20),
   "timezone" varchar(40),
   "admin1" varchar(6) NOT NULL,
   "admin2" varchar(6) NOT NULL,
@@ -225,8 +225,8 @@ ALTER TABLE "place" ADD FOREIGN KEY ("default_translation") REFERENCES "place_tr
 
 ALTER TABLE "neighbourhood" ADD FOREIGN KEY ("default_translation") REFERENCES "neighbourhood_translation" ("id");
 
-ALTER TABLE "admin4" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin3" ("id");
+ALTER TABLE "admin4" ADD FOREIGN KEY ("admin3_id") REFERENCES "admin3" ("id");
 
-ALTER TABLE "admin3" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin2" ("id");
+ALTER TABLE "admin3" ADD FOREIGN KEY ("admin2_id") REFERENCES "admin2" ("id");
 
-ALTER TABLE "admin2" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin1" ("id");
+ALTER TABLE "admin2" ADD FOREIGN KEY ("admin1_id") REFERENCES "admin1" ("id");

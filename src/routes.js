@@ -1,5 +1,6 @@
 import express from 'express';
 import { checkApiKey } from './middlewares/apikey.js';
+import addAdmin from './routes/admin/post.admin.js';
 import removeContinentTranslation from './routes/continent/delete.continent.translation.js';
 import getContinent from './routes/continent/get.continent.js';
 import getContinents from './routes/continent/get.continents.js';
@@ -10,6 +11,7 @@ import getCountries from './routes/country/get.countries.js';
 import getCountry from './routes/country/get.country.js';
 import addCountry from './routes/country/post.country.js';
 import addCountryTranslation from './routes/country/post.country.translation.js';
+import addPlace from './routes/place/post.place.js';
 const router = express.Router();
 
 router.get('/continent', checkApiKey, (req, res, next) => {
@@ -50,6 +52,14 @@ router.get('/country', checkApiKey, (req, res, next) => {
 
 router.delete('/country/translation/:id', checkApiKey, (req, res, next) => {
     removeCountryTranslation(req, res, next);
+});
+
+router.post('/place', checkApiKey, (req, res, next) => {
+    addPlace(req, res, next);
+});
+
+router.post('/admin', checkApiKey, (req, res, next) => {
+    addAdmin(req, res, next);
 });
 
 // All other routes get 404.
