@@ -17,6 +17,7 @@ CREATE TABLE "continent_translation" (
 CREATE TABLE "country" (
   "id" varchar(4) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
+  "admin_levels" integer,
   "created" timestamp NOT NULL,
   "updated" timestamp,
   "country_code" varchar(2) UNIQUE NOT NULL,
@@ -28,7 +29,7 @@ CREATE TABLE "country_translation" (
   "name" varchar(128) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "language_code" varchar(5) NOT NULL,
+  "language_code" varchar(5) UNIQUE NOT NULL,
   "country_id" varchar(4) NOT NULL
 );
 
@@ -60,7 +61,8 @@ CREATE TABLE "admin2" (
   "polygon" text,
   "latitude" decimal(8,6) NOT NULL,
   "longitude" decimal(9,6) NOT NULL,
-  "country_id" varchar(4) NOT NULL
+  "country_id" varchar(4) NOT NULL,
+  "falls_under_admin" varchar(6) NOT NULL
 );
 
 CREATE TABLE "admin2_translation" (
@@ -80,7 +82,8 @@ CREATE TABLE "admin3" (
   "polygon" text,
   "latitude" decimal(8,6) NOT NULL,
   "longitude" decimal(9,6) NOT NULL,
-  "country_id" varchar(4) NOT NULL
+  "country_id" varchar(4) NOT NULL,
+  "falls_under_admin" varchar(6) NOT NULL
 );
 
 CREATE TABLE "admin3_translation" (
@@ -100,7 +103,8 @@ CREATE TABLE "admin4" (
   "polygon" text,
   "latitude" decimal(8,6) NOT NULL,
   "longitude" decimal(9,6) NOT NULL,
-  "country_id" varchar(4) NOT NULL
+  "country_id" varchar(4) NOT NULL,
+  "falls_under_admin" varchar(6) NOT NULL
 );
 
 CREATE TABLE "admin4_translation" (
@@ -174,26 +178,55 @@ CREATE TABLE "postal_code" (
 );
 
 ALTER TABLE "country" ADD FOREIGN KEY ("continent_id") REFERENCES "continent" ("id");
+
 ALTER TABLE "place" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "postal_code" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "admin1" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "admin2" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "admin3" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "admin4" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "admin1_translation" ADD FOREIGN KEY ("admin1_id") REFERENCES "admin1" ("id");
+
 ALTER TABLE "admin2_translation" ADD FOREIGN KEY ("admin2_id") REFERENCES "admin2" ("id");
+
 ALTER TABLE "neighbourhood" ADD FOREIGN KEY ("place_id") REFERENCES "place" ("id");
+
 ALTER TABLE "place_translation" ADD FOREIGN KEY ("place_id") REFERENCES "place" ("id");
+
 ALTER TABLE "country_translation" ADD FOREIGN KEY ("country_id") REFERENCES "country" ("id");
+
 ALTER TABLE "continent_translation" ADD FOREIGN KEY ("continent_id") REFERENCES "continent" ("id");
+
 ALTER TABLE "neighbourhood_translation" ADD FOREIGN KEY ("neighbourhood_id") REFERENCES "neighbourhood" ("id");
+
 ALTER TABLE "continent" ADD FOREIGN KEY ("default_translation") REFERENCES "continent_translation" ("id");
+
 ALTER TABLE "country" ADD FOREIGN KEY ("default_translation") REFERENCES "country_translation" ("id");
+
 ALTER TABLE "admin1" ADD FOREIGN KEY ("default_translation") REFERENCES "admin1_translation" ("id");
+
 ALTER TABLE "admin2" ADD FOREIGN KEY ("default_translation") REFERENCES "admin2_translation" ("id");
+
 ALTER TABLE "admin3_translation" ADD FOREIGN KEY ("admin3_id") REFERENCES "admin3" ("id");
+
 ALTER TABLE "admin3" ADD FOREIGN KEY ("default_translation") REFERENCES "admin3_translation" ("id");
+
 ALTER TABLE "admin4" ADD FOREIGN KEY ("default_translation") REFERENCES "admin4_translation" ("id");
+
 ALTER TABLE "admin4_translation" ADD FOREIGN KEY ("admin4_id") REFERENCES "admin4" ("id");
+
 ALTER TABLE "place" ADD FOREIGN KEY ("default_translation") REFERENCES "place_translation" ("id");
+
 ALTER TABLE "neighbourhood" ADD FOREIGN KEY ("default_translation") REFERENCES "neighbourhood_translation" ("id");
+
+ALTER TABLE "admin4" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin3" ("id");
+
+ALTER TABLE "admin3" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin2" ("id");
+
+ALTER TABLE "admin2" ADD FOREIGN KEY ("falls_under_admin") REFERENCES "admin1" ("id");

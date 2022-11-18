@@ -17,6 +17,7 @@ table continent_translation {
 table country {
   id varchar(4) [PK, unique]
   default_translation varchar(12)
+  admin_levels integer
   created timestamp [not null]
   updated timestamp
   country_code varchar(2) [not null, unique]
@@ -28,7 +29,7 @@ table country_translation {
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
-  language_code varchar(5) [not null]
+  language_code varchar(5) [unique, not null]
   country_id varchar(4) [not null]
 }
 
@@ -61,6 +62,7 @@ table admin2 {
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   country_id varchar(4) [not null]
+  falls_under_admin varchar(6) [not null]
 }
 
 table admin2_translation {
@@ -81,6 +83,7 @@ table admin3 {
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   country_id varchar(4) [not null]
+  falls_under_admin varchar(6) [not null]
 }
 
 table admin3_translation {
@@ -101,6 +104,7 @@ table admin4 {
   latitude decimal(8,6) [not null]
   longitude decimal(9,6) [not null]
   country_id varchar(4) [not null]
+  falls_under_admin varchar(6) [not null]
 }
 
 table admin4_translation {
@@ -196,5 +200,7 @@ Ref: "admin3"."id" < "admin3_translation"."admin3_id"
 Ref: "admin3_translation"."id" < "admin3"."default_translation"
 Ref: "admin4_translation"."id" < "admin4"."default_translation"
 Ref: "admin4"."id" < "admin4_translation"."admin4_id"
+
 Ref: "place_translation"."id" < "place"."default_translation"
+
 Ref: "neighbourhood_translation"."id" < "neighbourhood"."default_translation"
