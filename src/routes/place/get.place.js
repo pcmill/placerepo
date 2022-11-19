@@ -34,7 +34,12 @@ async function getPlace(req, res, next) {
             INNER JOIN country_translation AS ct ON ct.id = c.default_translation
             WHERE c.id = $1`, [place.rows[0].country_id]);
 
-        const translations = await client.query(`SELECT id, name, created, updated, language_code FROM place_translation WHERE place_id = $1`, [req.params.id]);
+        const translations = await client.query(`
+            SELECT ct.id, ct.name, ct.created, ct.updated, ct.language_code, l.description AS "language"
+            FROM place_translation AS ct
+            LEFT JOIN language AS l ON l.language_code = ct.language_code
+            WHERE place_id = $1
+        `, [req.params.id]);
 
         res.status(200);
         res.send({

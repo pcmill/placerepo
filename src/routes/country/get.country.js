@@ -16,7 +16,12 @@ async function getCountry(req, res, next) {
             INNER JOIN continent_translation AS ct ON ct.id = c.default_translation
             WHERE c.id = $1`, [country.rows[0].continent_id]);
 
-        const translations = await client.query(`SELECT id, name, created, updated, language_code FROM country_translation WHERE country_id = $1`, [req.params.id]);
+        const translations = await client.query(`
+            SELECT ct.id, ct.name, ct.created, ct.updated, ct.language_code, l.description AS "language"
+            FROM country_translation AS ct
+            LEFT JOIN language AS l ON l.language_code = ct.language_code
+            WHERE country_id = $1
+        `, [req.params.id]);
 
         res.status(200);
         res.send({

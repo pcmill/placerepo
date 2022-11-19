@@ -12,7 +12,12 @@ async function getContinent(req, res, next) {
             throw({ message: 'This continent was not found!', status: 404 });
         }
 
-        const translations = await client.query(`SELECT id, name, created, updated, language_code FROM continent_translation WHERE continent_id = $1`, [req.params.id]);
+        const translations = await client.query(`
+            SELECT ct.id, ct.name, ct.created, ct.updated, ct.language_code, l.description AS "language"
+            FROM continent_translation AS ct
+            LEFT JOIN language AS l ON l.language_code = ct.language_code
+            WHERE continent_id = $1
+        `, [req.params.id]);
 
         res.status(200);
         res.send({
