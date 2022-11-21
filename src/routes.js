@@ -14,6 +14,7 @@ import addCountryTranslation from './routes/country/post.country.translation.js'
 import updateCountryTranslation from './routes/country/put.country.translation.js';
 import getLanguages from './routes/language/get.languages.js';
 import removePlaceTranslation from './routes/place/delete.place.translation.js';
+import getBoundingBox from './routes/place/get.bbox.js';
 import getPlace from './routes/place/get.place.js';
 import addPlace from './routes/place/post.place.js';
 import addPlaceTranslation from './routes/place/post.place.translation.js';
@@ -85,6 +86,10 @@ router.put('/place/translation', checkApiKey, (req, res, next) => {
 
 router.delete('/place/translation/:id', checkApiKey, (req, res, next) => {
     removePlaceTranslation(req, res, next);
+});
+
+router.post('/place/boundingbox', (req, res, next) => {
+    getBoundingBox(req, res, next);
 });
 
 // ADMIN
