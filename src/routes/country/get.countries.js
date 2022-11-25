@@ -25,11 +25,17 @@ async function getCountriesWithLang(lang, client) {
     return new Promise(async (resolve, reject) => {
         try {
             const countries = await client.query(`
-                SELECT c.id, ct.name
+                SELECT 
+                    c.id, 
+                    COALESCE(ct.name, ctr.name) AS name,
+                    (CASE WHEN COUNT(ct.id) > 0 THEN 1 ELSE 0 END),
+                    COUNT(ctc.id) AS "translations"
                 FROM country AS c
-                INNER JOIN country_translation AS ct ON ct.country_id = c.id
-                WHERE ct.language_code = $1
-                ORDER BY ct.name
+                LEFT JOIN country_translation AS ct ON ct.country_id = c.id AND ct.language_code = $1
+                INNER JOIN country_translation AS ctr ON ctr.id = c.default_translation
+                INNER JOIN country_translation AS ctc ON ctc.country_id = c.id
+                GROUP BY c.id, ct.name, ctr.name
+                ORDER BY name
             `, [lang]);
     
             resolve(countries.rows);
@@ -43,9 +49,11 @@ async function getCountriesByDefault(client) {
     return new Promise(async (resolve, reject) => {
         try {            
             const countries = await client.query(`
-                SELECT c.id, ct.name
+                SELECT c.id, ct.name, COUNT(ctc.id) AS "translations"
                 FROM country AS c
                 INNER JOIN country_translation AS ct ON ct.id = c.default_translation
+                INNER JOIN country_translation AS ctc ON ctc.country_id = c.id
+                GROUP BY c.id, ct.name
                 ORDER BY ct.name
             `);
     
