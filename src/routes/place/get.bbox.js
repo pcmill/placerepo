@@ -24,23 +24,25 @@ async function getBoundingBox(req, res, next) {
         } catch (error) {
             throw({ message: 'Invalid coordinates', status: 400});
         }
-
+        
         const places = await client.query(`
-            SELECT p.id, pt.name, p.latitude, p.longitude, p.population
-            FROM place AS p
-            INNER JOIN place_translation AS pt ON pt.id = p.default_translation
-            WHERE p.latitude > $1
-            AND p.latitude < $2
-            AND p.longitude > $3
-            AND p.longitude < $4
+        SELECT p.id, pt.name, p.latitude, p.longitude, p.population
+        FROM place AS p
+        INNER JOIN place_translation AS pt ON pt.id = p.default_translation
+        WHERE p.latitude > $1
+        AND p.latitude < $2
+        AND p.longitude > $3
+        AND p.longitude < $4
         `, [corner1[0], corner2[0], corner1[1], corner2[1]]);
-
+        
         res.status(200);
         res.send({
             places: places.rows
         });
     } catch (error) {
         next(error);
+    } finally {
+        client.release();
     }
 }
 
