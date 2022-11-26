@@ -6,12 +6,10 @@ async function addAdmin(req, res, next) {
     const client = await getClient();
 
     try {
-        if (!req.body || 
+        if (!req.body ||
             !req.body.level ||
             !req.body.country_id || 
-            !req.body.name || 
-            !req.body.latitude || 
-            !req.body.longitude ||
+            !req.body.name ||
             !req.body.language_code) {
             throw({ message: 'Missing stuff', status: 400 });
         }

@@ -1,6 +1,10 @@
 import express from 'express';
 import { checkApiKey } from './middlewares/apikey.js';
+import getAdmin from './routes/admin/get.admin.js';
+import getAdminsByCountry from './routes/admin/get.admins.country.js';
 import addAdmin from './routes/admin/post.admin.js';
+import addAdminTranslation from './routes/admin/post.admin.translation.js';
+import updateAdminTranslation from './routes/admin/put.admin.translation.js';
 import removeContinentTranslation from './routes/continent/delete.continent.translation.js';
 import getContinent from './routes/continent/get.continent.js';
 import getContinents from './routes/continent/get.continents.js';
@@ -95,6 +99,22 @@ router.post('/place/boundingbox', (req, res, next) => {
 // ADMIN
 router.post('/admin', checkApiKey, (req, res, next) => {
     addAdmin(req, res, next);
+});
+
+router.get('/admin/country/:countryid', (req, res, next) => {
+    getAdminsByCountry(req, res, next);
+});
+
+router.get('/admin/:level/:id', (req, res, next) => {
+    getAdmin(req, res, next);
+});
+
+router.post('/admin/:level/translation', (req, res, next) => {
+    addAdminTranslation(req, res, next);
+});
+
+router.put('/admin/:level/translation', (req, res, next) => {
+    updateAdminTranslation(req, res, next);
 });
 
 // OTHER
