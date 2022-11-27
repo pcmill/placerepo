@@ -2,7 +2,7 @@ import { getClient } from "../../database/connection.js";
 
 async function getAdminsByCountry(req, res, next) {
     const client = await getClient();
-    
+
     try {
         // check if the id exists
         const country = await client.query(`SELECT * FROM country WHERE id = $1`, [req.params.countryid]);

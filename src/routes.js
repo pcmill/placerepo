@@ -2,6 +2,7 @@ import express from 'express';
 import { checkApiKey } from './middlewares/apikey.js';
 import getAdmin from './routes/admin/get.admin.js';
 import getAdminsByCountry from './routes/admin/get.admins.country.js';
+import getAdminsByAdmin from './routes/admin/get.admins.js';
 import addAdmin from './routes/admin/post.admin.js';
 import addAdminTranslation from './routes/admin/post.admin.translation.js';
 import updateAdminTranslation from './routes/admin/put.admin.translation.js';
@@ -103,6 +104,10 @@ router.post('/admin', checkApiKey, (req, res, next) => {
 
 router.get('/admin/country/:countryid', (req, res, next) => {
     getAdminsByCountry(req, res, next);
+});
+
+router.get('/admin/list/:level/:id', (req, res, next) => {
+    getAdminsByAdmin(req, res, next);
 });
 
 router.get('/admin/:level/:id', (req, res, next) => {
