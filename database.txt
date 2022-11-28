@@ -33,7 +33,7 @@ table country_translation {
   country_id varchar(4) [not null]
 }
 
-table admin1 {
+table admin {
   id varchar(6) [PK, unique]
   default_translation varchar(12)
   created timestamp [not null]
@@ -42,79 +42,16 @@ table admin1 {
   longitude decimal(9,6) [not null]
   polygon text
   country_id varchar(4) [not null]
+  admin_id varchar(6)
 }
 
-table admin1_translation {
+table admin_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(5) [not null]
-  admin1_id varchar(6) [not null]
-}
-
-table admin2 {
-  id varchar(6) [PK, unique]
-  default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
-  polygon text
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
-  country_id varchar(4) [not null]
-  admin1_id varchar(6) [not null]
-}
-
-table admin2_translation {
-  id varchar(12) [PK, unique]
-  name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
-  language_code varchar(5) [not null]
-  admin2_id varchar(6) [not null]
-}
-
-table admin3 {
-  id varchar(6) [PK, unique]
-  default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
-  polygon text
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
-  country_id varchar(4) [not null]
-  admin2_id varchar(6) [not null]
-
-}
-
-table admin3_translation {
-  id varchar(12) [PK, unique]
-  name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
-  language_code varchar(5) [not null]
-  admin3_id varchar(6) [not null]
-}
-
-table admin4 {
-  id varchar(6) [PK, unique]
-  default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
-  polygon text
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
-  country_id varchar(4) [not null]
-  admin3_id varchar(6) [not null]
-}
-
-table admin4_translation {
-  id varchar(12) [PK, unique]
-  name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
-  language_code varchar(5) [not null]
-  admin4_id varchar(6) [not null]
+  admin_id varchar(6) [not null]
 }
 
 table place {
@@ -130,10 +67,7 @@ table place {
   polygon text
   wikidata_id varchar(20)
   timezone varchar(40)
-  admin1 varchar(6) [not null]
-  admin2 varchar(6) [not null]
-  admin3 varchar(6)
-  admin4 varchar(6)
+  admin varchar(6) [not null]
   country_id varchar(4) [not null]
 }
 
@@ -178,34 +112,26 @@ table postal_code {
   country_id varchar(4) [not null]
 }
 
+table language {
+  id serial [PK, unique]
+  language_code varchar(5)
+  description varchar(256)
+}
+
 Ref: "country"."continent_id" > "continent"."id"
 Ref: "place"."country_id" > "country"."id"
 Ref: "postal_code"."country_id" > "country"."id"
-Ref: "admin1"."country_id" > "country"."id"
-Ref: "admin2"."country_id" > "country"."id"
-Ref: "admin3"."country_id" > "country"."id"
-Ref: "admin4"."country_id" > "country"."id"
-Ref: "admin1_translation"."admin1_id" > "admin1"."id"
-Ref: "admin2_translation"."admin2_id" > "admin2"."id"
 Ref: "neighbourhood"."place_id" > "place"."id"
 Ref: "place_translation"."place_id" > "place"."id"
 Ref: "country_translation"."country_id" > "country"."id"
 Ref: "continent_translation"."continent_id" > "continent"."id"
 Ref: "neighbourhood_translation"."neighbourhood_id" > "neighbourhood"."id"
-
 Ref: "continent_translation"."id" < "continent"."default_translation"
 Ref: "country_translation"."id" < "country"."default_translation"
-Ref: "admin1_translation"."id" < "admin1"."default_translation"
-Ref: "admin2_translation"."id" < "admin2"."default_translation"
-Ref: "admin3"."id" < "admin3_translation"."admin3_id"
-Ref: "admin3_translation"."id" < "admin3"."default_translation"
-Ref: "admin4_translation"."id" < "admin4"."default_translation"
-Ref: "admin4"."id" < "admin4_translation"."admin4_id"
-
 Ref: "place_translation"."id" < "place"."default_translation"
-
 Ref: "neighbourhood_translation"."id" < "neighbourhood"."default_translation"
-
-Ref: "admin3"."id" < "admin4"."admin3_id"
-Ref: "admin2"."id" < "admin3"."admin2_id"
-Ref: "admin1"."id" < "admin2"."admin1_id"
+Ref: "admin"."id" < "admin_translation"."admin_id"
+Ref: "country"."id" < "admin"."country_id"
+Ref: "admin_translation"."id" < "admin"."default_translation"
+Ref: "admin"."id" < "place"."admin"
+Ref: "admin"."admin_id" > "admin"."id"
