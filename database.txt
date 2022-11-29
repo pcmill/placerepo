@@ -5,13 +5,18 @@ table continent {
   updated timestamp
 }
 
+table continent_to_translation {
+  id serial [PK, unique]
+  continent_id varchar(2)
+  translation_id varchar(12)
+}
+
 table continent_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(5) [not null]
-  continent_id varchar(2) [not null]
 }
 
 table country {
@@ -20,8 +25,14 @@ table country {
   admin_levels integer
   created timestamp [not null]
   updated timestamp
-  country_code varchar(2) [not null, unique]
+  country_code varchar(2) [not null]
   continent_id varchar(2) [not null]
+}
+
+table country_to_translation {
+  id serial [PK, unique]
+  country_id varchar(4)
+  translation_id varchar(12)
 }
 
 table country_translation {
@@ -30,7 +41,6 @@ table country_translation {
   created timestamp [not null]
   updated timestamp
   language_code varchar(5) [unique, not null]
-  country_id varchar(4) [not null]
 }
 
 table admin {
@@ -45,13 +55,18 @@ table admin {
   admin_id varchar(6)
 }
 
+table admin_to_translation {
+  id serial [PK, unique]
+  admin_id varchar(6)
+  translation_id varchar(12)
+}
+
 table admin_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
   created timestamp [not null]
   updated timestamp
   language_code varchar(5) [not null]
-  admin_id varchar(6) [not null]
 }
 
 table place {
@@ -67,8 +82,14 @@ table place {
   polygon text
   wikidata_id varchar(20)
   timezone varchar(40)
-  admin varchar(6) [not null]
+  admin_id varchar(6) [not null]
   country_id varchar(4) [not null]
+}
+
+table place_to_translation {
+  id serial [PK, unique]
+  place_id varchar(8)
+  translation_id varchar(12)
 }
 
 table place_translation {
@@ -77,7 +98,6 @@ table place_translation {
   created timestamp [not null]
   updated timestamp
   language_code varchar(5) [not null]
-  place_id varchar(8) [not null]
 }
 
 table neighbourhood {
@@ -91,6 +111,12 @@ table neighbourhood {
   place_id varchar(8) [not null]
 }
 
+table neighbourhood_to_translation {
+  id serial [PK, unique]
+  neighbourhood_id varchar(10)
+  translation_id varchar(12)
+}
+
 table neighbourhood_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
@@ -98,7 +124,6 @@ table neighbourhood_translation {
   updated timestamp
   population integer
   language_code varchar(5) [not null]
-  neighbourhood_id varchar(10) [not null]
 }
 
 table postal_code {
@@ -118,20 +143,47 @@ table language {
   description varchar(256)
 }
 
-Ref: "country"."continent_id" > "continent"."id"
-Ref: "place"."country_id" > "country"."id"
-Ref: "postal_code"."country_id" > "country"."id"
-Ref: "neighbourhood"."place_id" > "place"."id"
-Ref: "place_translation"."place_id" > "place"."id"
-Ref: "country_translation"."country_id" > "country"."id"
-Ref: "continent_translation"."continent_id" > "continent"."id"
-Ref: "neighbourhood_translation"."neighbourhood_id" > "neighbourhood"."id"
+
+Ref: "continent"."id" < "continent_to_translation"."continent_id"
+
+Ref: "continent_translation"."id" < "continent_to_translation"."translation_id"
+
 Ref: "continent_translation"."id" < "continent"."default_translation"
+
+Ref: "country"."id" < "country_to_translation"."country_id"
+
+Ref: "country_translation"."id" < "country_to_translation"."translation_id"
+
 Ref: "country_translation"."id" < "country"."default_translation"
-Ref: "place_translation"."id" < "place"."default_translation"
-Ref: "neighbourhood_translation"."id" < "neighbourhood"."default_translation"
-Ref: "admin"."id" < "admin_translation"."admin_id"
-Ref: "country"."id" < "admin"."country_id"
+
+Ref: "admin_translation"."id" < "admin_to_translation"."translation_id"
+
+Ref: "admin"."id" < "admin_to_translation"."admin_id"
+
 Ref: "admin_translation"."id" < "admin"."default_translation"
-Ref: "admin"."id" < "place"."admin"
-Ref: "admin"."admin_id" > "admin"."id"
+
+Ref: "place"."id" < "place_to_translation"."place_id"
+
+Ref: "place_translation"."id" < "place_to_translation"."translation_id"
+
+Ref: "place_translation"."id" < "place"."default_translation"
+
+Ref: "admin"."id" < "place"."admin_id"
+
+Ref: "country"."id" < "place"."country_id"
+
+Ref: "neighbourhood_translation"."id" < "neighbourhood_to_translation"."translation_id"
+
+Ref: "neighbourhood"."id" < "neighbourhood_to_translation"."neighbourhood_id"
+
+Ref: "neighbourhood_translation"."name" < "neighbourhood"."default_translation"
+
+Ref: "country"."id" < "postal_code"."country_id"
+
+Ref: "place"."id" < "neighbourhood"."place_id"
+
+Ref: "country"."id" < "admin"."country_id"
+
+Ref: "admin"."id" < "admin"."admin_id"
+
+Ref: "continent"."id" < "country"."continent_id"
