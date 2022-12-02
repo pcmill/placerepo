@@ -106,7 +106,7 @@ router.get('/admin/country/:countryid', (req, res, next) => {
     getAdminsByCountry(req, res, next);
 });
 
-router.get('/admin/list//:id', (req, res, next) => {
+router.get('/admin/list/:id', (req, res, next) => {
     getAdminsByAdmin(req, res, next);
 });
 

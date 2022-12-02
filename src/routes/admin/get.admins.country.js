@@ -70,7 +70,7 @@ async function getAdminsByDefault(country_id, client) {
                 WHERE a.country_id = $1
                 AND a.admin_id IS NULL
                 GROUP BY a.id, adt.name, ct.name
-                ORDER BY ct.name
+                ORDER BY adt.name
             `, [country_id]);
     
             resolve(countries.rows);
