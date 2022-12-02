@@ -43,20 +43,17 @@ async function addCountry(req, res, next) {
             throw({ message: 'Country code has to be 2 characters long.', status: 400 });
         }
 
-        const country = await client.query(`
-            INSERT INTO country(id, country_code, continent_id, created)
-            VALUES($1, UPPER($2), $3, NOW())
-            RETURNING *`, [countryId, req.body.country_code, req.body.continent_id]);
-        
-        const translation = await client.query(`
-            INSERT INTO country_translation(id, name, language_code, country_id, created)
-            VALUES($1, $2, $3, $4, NOW())
-            RETURNING *`, [translationId, req.body.name, req.body.language_code, country.rows[0].id]);
+        await client.query(`
+            INSERT INTO country_translation(id, name, language_code, created)
+            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
 
         await client.query(`
-            UPDATE country
-            SET default_translation = $1
-            WHERE id = $2`, [translation.rows[0].id, country.rows[0].id]);
+            INSERT INTO country(id, default_translation, country_code, continent_id, created)
+            VALUES($1,  $2, UPPER($3), $4, NOW())`, [countryId, translationId, req.body.country_code, req.body.continent_id]);
+
+        await client.query(`
+            INSERT INTO country_to_translation(country_id, translation_id)
+            VALUES($1, $2`, [req.body.country_id, translationId]);
 
         await client.query('COMMIT');
 

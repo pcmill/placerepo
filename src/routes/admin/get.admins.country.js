@@ -61,12 +61,14 @@ async function getAdminsByDefault(country_id, client) {
         try {            
             const countries = await client.query(`
                 SELECT a.id, adt.name, ct.name AS "country", COUNT(adc.id) AS "translations"
-                FROM admin1 AS a
-                INNER JOIN admin1_translation AS adt ON adt.id = a.default_translation
-                INNER JOIN admin1_translation AS adc ON adc.admin1_id = a.id
+                FROM admin AS a
+                INNER JOIN admin_to_translation AS att ON att.admin_id = a.id
+                INNER JOIN admin_translation AS adt ON adt.id = a.default_translation
+                INNER JOIN admin_translation AS adc ON adc.id = att.translation_id
                 INNER JOIN country AS c ON c.id = a.country_id
                 INNER JOIN country_translation AS ct ON ct.id = c.default_translation
                 WHERE a.country_id = $1
+                AND a.admin_id IS NULL
                 GROUP BY a.id, adt.name, ct.name
                 ORDER BY ct.name
             `, [country_id]);

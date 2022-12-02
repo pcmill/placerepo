@@ -4,14 +4,8 @@ async function getAdmin(req, res, next) {
     const client = await getClient();
     
     try {
-        const level = Number(req.params.level);
-
-        if (![1, 2, 3, 4].includes(level)) {
-            throw({ message: 'Not a valid level.', status: 400 });
-        }
-        
         // check if the id exists
-        const admin = await client.query(`SELECT * FROM admin${level} WHERE id = $1`, [req.params.id]);
+        const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.params.id]);
 
         if (!admin.rows.length) {
             throw({ message: 'This admin was not found!', status: 404 });
@@ -23,10 +17,11 @@ async function getAdmin(req, res, next) {
             WHERE c.id = $1`, [admin.rows[0].country_id]);
 
         const translations = await client.query(`
-            SELECT ct.id, ct.name, ct.created, ct.updated, ct.language_code, l.description AS "language"
-            FROM admin${level}_translation AS ct
-            LEFT JOIN language AS l ON l.language_code = ct.language_code
-            WHERE admin${level}_id = $1
+            SELECT at.id, at.name, at.created, at.updated, at.language_code, l.description AS "language"
+            FROM admin_to_translation AS att
+            INNER JOIN admin_translation AS at ON at.id = att.translation_id
+            LEFT JOIN language AS l ON l.language_code = at.language_code
+            WHERE att.admin_id = $1
         `, [req.params.id]);
 
         res.status(200);

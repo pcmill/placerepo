@@ -11,16 +11,10 @@ async function updateAdminTranslation(req, res, next) {
             throw({ message: 'Missing stuff', status: 400 });
         }
 
-        const level = Number(req.params.level);
-
-        if (![1, 2, 3, 4].includes(level)) {
-            throw({ message: 'Not a valid level.', status: 400 });
-        }
-
         await client.query('BEGIN');
 
         // check if the id exists
-        const adminTranslation = await client.query(`SELECT * FROM admin${level}_translation WHERE id = $1`, [req.body.translation_id]);
+        const adminTranslation = await client.query(`SELECT * FROM admin_translation WHERE id = $1`, [req.body.translation_id]);
 
         if (!adminTranslation.rows) {
             throw({ message: 'This admin translation was not found!', status: 404 });
@@ -39,10 +33,10 @@ async function updateAdminTranslation(req, res, next) {
         }
 
         await client.query(`
-            UPDATE admin${level}_translation
+            UPDATE admin_translation
             SET name = $1, language_code = $2, updated = NOW()
             WHERE id = $3`, [req.body.name, req.body.language_code, req.body.translation_id]);
-        
+
         await client.query('COMMIT');
 
         res.status(200);

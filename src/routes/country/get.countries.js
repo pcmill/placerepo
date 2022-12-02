@@ -49,11 +49,12 @@ async function getCountriesByDefault(client) {
     return new Promise(async (resolve, reject) => {
         try {            
             const countries = await client.query(`
-                SELECT c.id, ct.name, COUNT(ctc.id) AS "translations"
+                SELECT ctt.country_id AS "id", ct.name, COUNT(ctc.id) AS "translations"
                 FROM country AS c
+                LEFT JOIN country_to_translation AS ctt ON ctt.country_id = c.id
                 INNER JOIN country_translation AS ct ON ct.id = c.default_translation
-                INNER JOIN country_translation AS ctc ON ctc.country_id = c.id
-                GROUP BY c.id, ct.name
+                INNER JOIN country_translation AS ctc ON ctt.translation_id = ctc.id
+                GROUP BY ctt.country_id, ct.name
                 ORDER BY ct.name
             `);
     

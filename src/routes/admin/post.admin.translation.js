@@ -12,18 +12,12 @@ async function addAdminTranslation(req, res, next) {
             throw({ message: 'Missing stuff', status: 400 });
         }
 
-        const level = Number(req.params.level);
-
-        if (![1, 2, 3, 4].includes(level)) {
-            throw({ message: 'Not a valid level.', status: 400 });
-        }
-
         const translationId = await randomId(12);
 
         await client.query('BEGIN');
 
         // check if the id exists
-        const admin = await client.query(`SELECT * FROM admin${level} WHERE id = $1`, [req.body.admin_id]);
+        const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.body.admin_id]);
 
         if (!admin.rows) {
             throw({ message: 'This admin was not found!', status: 404 });
@@ -42,8 +36,12 @@ async function addAdminTranslation(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO admin${level}_translation(id, name, language_code, admin${level}_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.admin_id]);
+            INSERT INTO admin_translation(id, name, language_code, created)
+            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
+
+        await client.query(`
+            INSERT INTO admin_to_translation(admin_id, translation_id)
+            VALUES($1, $2)`, [req.body.admin_id, translationId]);
 
         await client.query('COMMIT');
 

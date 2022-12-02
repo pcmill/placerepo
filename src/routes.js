@@ -106,19 +106,19 @@ router.get('/admin/country/:countryid', (req, res, next) => {
     getAdminsByCountry(req, res, next);
 });
 
-router.get('/admin/list/:level/:id', (req, res, next) => {
+router.get('/admin/list//:id', (req, res, next) => {
     getAdminsByAdmin(req, res, next);
 });
 
-router.get('/admin/:level/:id', (req, res, next) => {
+router.get('/admin/:id', (req, res, next) => {
     getAdmin(req, res, next);
 });
 
-router.post('/admin/:level/translation', (req, res, next) => {
+router.post('/admin/translation', (req, res, next) => {
     addAdminTranslation(req, res, next);
 });
 
-router.put('/admin/:level/translation', (req, res, next) => {
+router.put('/admin/translation', (req, res, next) => {
     updateAdminTranslation(req, res, next);
 });
 
