@@ -14,9 +14,13 @@ async function removeContinentTranslation(req, res, next) {
         }
 
         await client.query(`
+            DELETE FROM continent_to_translation
+            WHERE translation_id = $1`, [req.params.id]);
+
+        await client.query(`
             DELETE FROM continent_translation
             WHERE id = $1`, [req.params.id]);
-        
+
         await client.query('COMMIT');
 
         res.status(200);

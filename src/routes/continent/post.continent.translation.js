@@ -14,7 +14,7 @@ async function addContinentTranslation(req, res, next) {
         await client.query('BEGIN');
 
         // check if the id exists
-        const continent = await client.query(`SELECT * FROM continent WHERE id = $1`, [req.body.id]);
+        const continent = await client.query(`SELECT * FROM continent WHERE id = $1`, [req.body.continent_id]);
 
         if (!continent.rows) {
             throw({ message: 'This continent was not found!', status: 404 });
@@ -33,9 +33,13 @@ async function addContinentTranslation(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO continent_translation(id, name, language_code, continent_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.continent_id]);
-        
+            INSERT INTO continent_translation(id, name, language_code, created)
+            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code]);
+
+        await client.query(`
+            INSERT INTO continent_to_translation(continent_id, translation_id)
+            VALUES($1, $2)`, [req.body.continent_id, translationId]);
+
         await client.query('COMMIT');
 
         res.status(201);

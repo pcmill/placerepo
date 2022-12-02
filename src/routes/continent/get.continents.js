@@ -27,7 +27,8 @@ async function getContinentWithLang(lang, client) {
             const continents = await client.query(`
                 SELECT c.id, ct.name
                 FROM continent AS c
-                INNER JOIN continent_translation AS ct ON ct.continent_id = c.id
+                INNER JOIN continent_to_translation AS ctt ON ctt.continent_id = c.id
+                INNER JOIN continent_translation AS ct ON ctt.translation_id = ct.id
                 WHERE ct.language_code = $1
                 ORDER BY ct.name
             `, [lang]);
