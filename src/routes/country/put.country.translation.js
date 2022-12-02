@@ -33,7 +33,7 @@ async function updateCountryTranslation(req, res, next) {
             UPDATE country_translation
             SET name = $1, language_code = $2, updated = NOW()
             WHERE id = $3`, [req.body.name, req.body.language_code, req.body.translation_id]);
-        
+
         await client.query('COMMIT');
 
         res.status(200);
