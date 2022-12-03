@@ -14,6 +14,10 @@ async function removeCountryTranslation(req, res, next) {
         }
 
         await client.query(`
+            DELETE FROM country_to_translation
+            WHERE translation_id = $1`, [req.params.id]);
+
+        await client.query(`
             DELETE FROM country_translation
             WHERE id = $1`, [req.params.id]);
 

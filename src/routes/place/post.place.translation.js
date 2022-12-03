@@ -33,9 +33,13 @@ async function addPlaceTranslation(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO place_translation(id, name, language_code, place_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, req.body.place_id]);
+            INSERT INTO place_translation(id, name, language_code, created)
+            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
 
+        await client.query(`
+            INSERT INTO place_to_translation(place_id, translation_id)
+            VALUES($1, $2)`, [req.body.place_id, translationId]);
+        
         await client.query('COMMIT');
 
         res.status(201);

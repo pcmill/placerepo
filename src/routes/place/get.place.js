@@ -12,20 +12,18 @@ async function getPlace(req, res, next) {
         }
 
         const admins = await client.query(`
-            SELECT 
-                a1t."name" AS "admin1_name",
-                a2t."name" AS "admin2_name",
-                a3t."name" AS "admin3_name",
-                a4t."name" AS "admin4_name"
+            SELECT
+                a.id AS "admin_1_id",
+                at."name" AS "admin_1_name",
+                
+                a2.id AS "admin_2_id",
+                at2."name" AS "admin_2_name"
             FROM place AS p
-            INNER JOIN admin1 AS a1 ON a1.id = p.admin1
-            INNER JOIN admin1_translation AS a1t ON a1t.id = a1.default_translation
-            INNER JOIN admin2 AS a2 ON a2.id = p.admin2
-            INNER JOIN admin2_translation AS a2t ON a2t.id = a2.default_translation
-            LEFT JOIN admin3 AS a3 ON a3.id = p.admin3
-            LEFT JOIN admin3_translation AS a3t ON a3t.id = a3.default_translation
-            LEFT JOIN admin4 AS a4 ON a4.id = p.admin4
-            LEFT JOIN admin4_translation AS a4t ON a4t.id = a4.default_translation
+            LEFT JOIN admin AS a ON a.id = p.admin_id
+            LEFT JOIN admin_translation AS at ON at.id = a.default_translation
+            
+            LEFT JOIN admin AS a2 ON a2.id = a.admin_id
+            LEFT JOIN admin_translation AS at2 ON at2.id = a2.default_translation
             WHERE p.id = $1
         `, [req.params.id]);
 
@@ -35,10 +33,11 @@ async function getPlace(req, res, next) {
             WHERE c.id = $1`, [place.rows[0].country_id]);
 
         const translations = await client.query(`
-            SELECT ct.id, ct.name, ct.created, ct.updated, ct.language_code, l.description AS "language"
-            FROM place_translation AS ct
-            LEFT JOIN language AS l ON l.language_code = ct.language_code
-            WHERE place_id = $1
+            SELECT pt.id, pt.name, pt.created, pt.updated, pt.language_code, l.description AS "language"
+            FROM place_translation AS pt
+            INNER JOIN place_to_translation AS ptt ON ptt.translation_id = pt.id
+            LEFT JOIN language AS l ON l.language_code = pt.language_code
+            WHERE ptt.place_id = $1
         `, [req.params.id]);
 
         res.status(200);
