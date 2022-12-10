@@ -13,9 +13,11 @@ export function checkLatLon(latitude, longitude) {
             throw({ message: 'Not a valid longitude, must be between -180 and 180.', status: 400 });
         }
 
+        // Rounding to 4 decimals will get us a precision of 11.1 meters which 
+        // is more than enough for our use case.
         return {
-            latitude: roundTo(latitude, 6),
-            longitude: roundTo(longitude, 6)
+            latitude: roundTo(latitude, 4),
+            longitude: roundTo(longitude, 4)
         }
     } catch (error) {
         throw(error);

@@ -23,6 +23,7 @@ import getBoundingBox from './routes/place/get.bbox.js';
 import getPlace from './routes/place/get.place.js';
 import addPlace from './routes/place/post.place.js';
 import addPlaceTranslation from './routes/place/post.place.translation.js';
+import updatePlace from './routes/place/put.place.js';
 import updatePlaceTranslation from './routes/place/put.place.translation.js';
 const router = express.Router();
 
@@ -79,6 +80,10 @@ router.get('/place/:id', (req, res, next) => {
 
 router.post('/place', checkApiKey, (req, res, next) => {
     addPlace(req, res, next);
+});
+
+router.put('/place', checkApiKey, (req, res, next) => {
+    updatePlace(req, res, next);
 });
 
 router.post('/place/translation', checkApiKey, (req, res, next) => {

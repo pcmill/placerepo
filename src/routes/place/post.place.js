@@ -56,7 +56,7 @@ async function addPlace(req, res, next) {
 
         const timezone = await getTimezone(latitude, longitude);
 
-        const place = await client.query(`
+        await client.query(`
             INSERT INTO place(id, country_id, latitude, longitude, timezone, elevation_meters, admin_id, created)
             VALUES($1, $2, $3, $4, $5, $6, $7, NOW())`, [
                 placeId, 
