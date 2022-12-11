@@ -24,17 +24,35 @@ async function getBoundingBox(req, res, next) {
         } catch (error) {
             throw({ message: 'Invalid coordinates', status: 400});
         }
-        
-        const places = await client.query(`
-        SELECT p.id, pt.name, p.latitude, p.longitude, p.population
-        FROM place AS p
-        INNER JOIN place_translation AS pt ON pt.id = p.default_translation
-        WHERE p.latitude < $1
-        AND p.latitude > $2
-        AND p.longitude < $3
-        AND p.longitude > $4
-        `, [northWest[0], southEast[0], northWest[1], southEast[1]]);
-        
+
+        // Calculate the area size of the bounding box
+        const area = (southEast[1] - northWest[1]) * (southEast[0] - northWest[0]);
+
+        let query = '';
+        if (area < 0.05) {
+            query = `
+                SELECT p.id, pt.name, p.latitude, p.longitude, p.population, p.polygon
+                FROM place AS p
+                INNER JOIN place_translation AS pt ON pt.id = p.default_translation
+                WHERE p.latitude < $1
+                AND p.latitude > $2
+                AND p.longitude < $3
+                AND p.longitude > $4
+            `;
+        } else {
+            query = `
+                SELECT p.id, pt.name, p.latitude, p.longitude, p.population
+                FROM place AS p
+                INNER JOIN place_translation AS pt ON pt.id = p.default_translation
+                WHERE p.latitude < $1
+                AND p.latitude > $2
+                AND p.longitude < $3
+                AND p.longitude > $4
+            `;
+        }
+
+        const places = await client.query(query, [northWest[0], southEast[0], northWest[1], southEast[1]]);
+
         res.status(200);
         res.send({
             places: places.rows
