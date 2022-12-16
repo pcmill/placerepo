@@ -48,8 +48,8 @@ table admin {
   default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
+  latitude decimal(8,4) [not null]
+  longitude decimal(9,4) [not null]
   polygon text
   country_id varchar(4) [not null]
   admin_id varchar(6)
@@ -74,8 +74,8 @@ table place {
   default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
+  latitude decimal(8,4) [not null]
+  longitude decimal(9,4) [not null]
   population integer
   population_approximate boolean [default: false]
   elevation_meters integer [not null]
@@ -105,8 +105,8 @@ table neighbourhood {
   default_translation varchar(12)
   created timestamp [not null]
   updated timestamp
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
+  latitude decimal(8,4) [not null]
+  longitude decimal(9,4) [not null]
   polygon text
   place_id varchar(8) [not null]
 }
@@ -131,8 +131,8 @@ table postal_code {
   code varchar(20) [not null]
   created timestamp [not null]
   updated timestamp
-  latitude decimal(8,6) [not null]
-  longitude decimal(9,6) [not null]
+  latitude decimal(8,4) [not null]
+  longitude decimal(9,4) [not null]
   polygon text
   country_id varchar(4) [not null]
 }

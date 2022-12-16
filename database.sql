@@ -48,8 +48,8 @@ CREATE TABLE "admin" (
   "default_translation" varchar(12),
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "latitude" decimal(8,6) NOT NULL,
-  "longitude" decimal(9,6) NOT NULL,
+  "latitude" decimal(8,4) NOT NULL,
+  "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
   "country_id" varchar(4) NOT NULL,
   "admin_id" varchar(6)
@@ -74,8 +74,8 @@ CREATE TABLE "place" (
   "default_translation" varchar(12),
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "latitude" decimal(8,6) NOT NULL,
-  "longitude" decimal(9,6) NOT NULL,
+  "latitude" decimal(8,4) NOT NULL,
+  "longitude" decimal(9,4) NOT NULL,
   "population" integer,
   "population_approximate" boolean DEFAULT false,
   "elevation_meters" integer NOT NULL,
@@ -105,8 +105,8 @@ CREATE TABLE "neighbourhood" (
   "default_translation" varchar(12),
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "latitude" decimal(8,6) NOT NULL,
-  "longitude" decimal(9,6) NOT NULL,
+  "latitude" decimal(8,4) NOT NULL,
+  "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
   "place_id" varchar(8) NOT NULL
 );
@@ -131,8 +131,8 @@ CREATE TABLE "postal_code" (
   "code" varchar(20) NOT NULL,
   "created" timestamp NOT NULL,
   "updated" timestamp,
-  "latitude" decimal(8,6) NOT NULL,
-  "longitude" decimal(9,6) NOT NULL,
+  "latitude" decimal(8,4) NOT NULL,
+  "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
   "country_id" varchar(4) NOT NULL
 );
