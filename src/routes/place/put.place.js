@@ -146,6 +146,11 @@ function checkPolygon(polygon) {
             throw({ message: 'Polygon can not have more than 512 points.', status: 400 });
         }
 
+        // Check if the first and last point are the same
+        if (polygon[0][0] !== polygon[polygon.length - 1][0] || polygon[0][1] !== polygon[polygon.length - 1][1]) {
+            throw({ message: 'First and last point should be equal.', status: 400 });
+        }
+
         polygon.forEach((point) => {
             if (!Array.isArray(point)) {
                 throw({ message: 'Polygon points must be arrays.', status: 400 });

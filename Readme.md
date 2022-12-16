@@ -41,3 +41,10 @@ In almost every entity there is a reference to a `default_translation`. This is 
 ### What are the polygons for?
 
 The polygons are an optional visual reference. It should be mostly to get a general idea of how large a place is. Currently it is not yet meant to be an "official" outline of the entity since this is prone to change and takes a long time to research properly.
+
+#### Polygon format
+
+A polygon works the following way:
+- A array of arrays.
+- Each array is a longitude,latitude pair (4 decimals).
+- The first and last pairs should be the same.
