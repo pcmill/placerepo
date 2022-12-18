@@ -47,6 +47,16 @@ async function updatePlace(req, res, next) {
             population = checkPopulation(req.body.population);
         }
 
+        let population_record_year;
+        if (req.body.population_record_year) {
+            population_record_year = checkPopulationRecordYear(req.body.population_record_year);
+        }
+
+        let population_approximate;
+        if (req.body.population_approximate) {
+            population_approximate = checkPopulationApproximate(req.body.population_approximate);
+        }
+
         let elevation_meters = 0;
         if (req.body.elevation_meters) {
             elevation_meters = checkElevation(req.body.elevation_meters);
@@ -65,15 +75,19 @@ async function updatePlace(req, res, next) {
                 longitude = $3,
                 timezone = $4,
                 population = $5,
-                elevation_meters = $6,
-                polygon = $7,
+                population_approximate = $6,
+                population_record_year = $7,
+                elevation_meters = $8,
+                polygon = $9,
                 updated = NOW()
-            WHERE id = $8`, [
+            WHERE id = $10`, [
                 req.body.country_id,
                 latitude,
                 longitude,
                 timezone,
                 population,
+                population_approximate,
+                population_record_year,
                 elevation_meters,
                 polygon,
                 req.body.place_id
@@ -125,6 +139,34 @@ function checkElevation(elevation) {
         }
 
         return elevation;
+    } catch (error) {
+        throw(error);
+    }
+}
+
+function checkPopulationRecordYear(year) {
+    try {
+        year = Number(year);
+
+        if (year < 0) {
+            throw({ message: 'Year can not be negative.', status: 400 });
+        }
+
+        if (year > new Date().getFullYear() + 1) {
+            throw({ message: `Year can not be larger than ${new Date().getFullYear() + 1}.`, status: 400 });
+        }
+
+        return year;
+    } catch (error) {
+        throw(error);
+    }
+}
+
+function checkPopulationApproximate(population_approximate) {
+    try {
+        population_approximate = Boolean(population_approximate);
+
+        return population_approximate;
     } catch (error) {
         throw(error);
     }

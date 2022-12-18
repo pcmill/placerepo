@@ -78,6 +78,7 @@ table place {
   longitude decimal(9,4) [not null]
   population integer
   population_approximate boolean [default: false]
+  population_record_year smallint
   elevation_meters integer [not null]
   polygon text
   wikidata_id varchar(20)

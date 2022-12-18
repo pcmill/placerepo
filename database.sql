@@ -78,6 +78,7 @@ CREATE TABLE "place" (
   "longitude" decimal(9,4) NOT NULL,
   "population" integer,
   "population_approximate" boolean DEFAULT false,
+  "population_record_year" smallint,
   "elevation_meters" integer NOT NULL,
   "polygon" text,
   "wikidata_id" varchar(20),
