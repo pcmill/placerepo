@@ -53,7 +53,7 @@ async function updatePlace(req, res, next) {
         }
 
         let population_approximate;
-        if (req.body.population_approximate) {
+        if (req.body.population_approximate !== null) {
             population_approximate = checkPopulationApproximate(req.body.population_approximate);
         }
 
