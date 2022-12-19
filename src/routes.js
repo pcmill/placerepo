@@ -6,6 +6,7 @@ import getAdminsByAdmin from './routes/admin/get.admins.js';
 import addAdmin from './routes/admin/post.admin.js';
 import addAdminTranslation from './routes/admin/post.admin.translation.js';
 import updateAdminTranslation from './routes/admin/put.admin.translation.js';
+import getGithubAuth from './routes/auth/github.auth.js';
 import removeContinentTranslation from './routes/continent/delete.continent.translation.js';
 import getContinent from './routes/continent/get.continent.js';
 import getContinents from './routes/continent/get.continents.js';
@@ -130,6 +131,11 @@ router.put('/admin/translation', (req, res, next) => {
 // OTHER
 router.get('/language', (req, res, next) => {
     getLanguages(req, res, next);
+});
+
+// Github Auth
+router.get('/auth/github', (req, res, next) => {
+    getGithubAuth(req, res, next);
 });
 
 // All other routes get 404.
