@@ -67,6 +67,11 @@ async function updatePlace(req, res, next) {
             polygon = checkPolygon(req.body.polygon);
         }
 
+        let wikidata_id;
+        if (req.body.wikidata_id) {
+            wikidata_id = checkWikidataId(req.body.wikidata_id);
+        }
+
         await client.query(`
             UPDATE place
             SET
@@ -79,8 +84,9 @@ async function updatePlace(req, res, next) {
                 population_record_year = $7,
                 elevation_meters = $8,
                 polygon = $9,
+                wikidata_id = $10,
                 updated = NOW()
-            WHERE id = $10`, [
+            WHERE id = $11`, [
                 req.body.country_id,
                 latitude,
                 longitude,
@@ -90,6 +96,7 @@ async function updatePlace(req, res, next) {
                 population_record_year,
                 elevation_meters,
                 polygon,
+                wikidata_id,
                 req.body.place_id
             ]);
 
@@ -209,6 +216,30 @@ function checkPolygon(polygon) {
         });
 
         return JSON.stringify(polygon);
+    } catch (error) {
+        throw(error);
+    }
+}
+
+function checkWikidataId(wikidata_id) {
+    try {
+        wikidata_id = String(wikidata_id);
+
+        if (wikidata_id.length > 64) {
+            throw({ message: 'Wikidata ID can not be longer than 64 characters.', status: 400 });
+        }
+
+        if (wikidata_id.length === 0) {
+            throw({ message: 'Wikidata ID can not be empty.', status: 400 });
+        }
+
+        if (wikidata_id[0].toUpperCase() !== 'Q') {
+            throw({ message: 'Wikidata ID must start with a Q.', status: 400 });
+        }
+
+        wikidata_id = wikidata_id.toUpperCase();
+
+        return wikidata_id;
     } catch (error) {
         throw(error);
     }
