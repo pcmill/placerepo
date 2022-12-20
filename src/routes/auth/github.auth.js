@@ -26,7 +26,7 @@ async function getGithubAuth(req, res, next) {
         await client.query('COMMIT');
 
         // redirect to the frontend
-        res.redirect(`${FRONTEND_URL}/auth/github?access_token=${response.access_token}&user_id=${user.id}`);
+        res.redirect(`${process.env.FRONTEND_URL}/auth/github?access_token=${response.access_token}&user_id=${user.id}`);
     } catch (error) {
         next(error);
     } finally {
