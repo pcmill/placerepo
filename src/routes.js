@@ -26,6 +26,8 @@ import addPlace from './routes/place/post.place.js';
 import addPlaceTranslation from './routes/place/post.place.translation.js';
 import updatePlace from './routes/place/put.place.js';
 import updatePlaceTranslation from './routes/place/put.place.translation.js';
+import getQueue from './routes/queue/get.queue.js';
+import addQueue from './routes/queue/post.queue.js';
 const router = express.Router();
 
 // CONTINENT
@@ -131,6 +133,15 @@ router.put('/admin/translation', (req, res, next) => {
 // OTHER
 router.get('/language', (req, res, next) => {
     getLanguages(req, res, next);
+});
+
+// QUEUE
+router.get('/queue', (req, res, next) => {
+    getQueue(req, res, next);
+});
+
+router.post('/queue', (req, res, next) => {
+    addQueue(req, res, next);
 });
 
 // Github Auth
