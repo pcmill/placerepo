@@ -12,7 +12,6 @@ async function addPlace(req, res, next) {
             !req.body.name || 
             !req.body.latitude || 
             !req.body.longitude ||
-            !req.body.admin_id ||
             !req.body.language_code) {
             throw({ message: 'Missing stuff', status: 400 });
         }
@@ -30,10 +29,12 @@ async function addPlace(req, res, next) {
         }
 
         // check if the id exists
-        const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.body.admin_id]);
+        if (req.body.admin_id) {
+            const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.body.admin_id]);
 
-        if (!admin.rows) {
-            throw({ message: 'This admin was not found!', status: 404 });
+            if (!admin.rows) {
+                throw({ message: 'This admin was not found!', status: 404 });
+            }
         }
 
         const {latitude, longitude} = checkLatLon(req.body.latitude, req.body.longitude);

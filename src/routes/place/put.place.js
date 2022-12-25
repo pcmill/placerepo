@@ -10,8 +10,7 @@ async function updatePlace(req, res, next) {
             !req.body.place_id ||
             !req.body.country_id || 
             !req.body.latitude || 
-            !req.body.longitude ||
-            !req.body.admin_id) {
+            !req.body.longitude) {
             throw({ message: 'Missing stuff', status: 400 });
         }
 
@@ -32,10 +31,15 @@ async function updatePlace(req, res, next) {
         }
 
         // check if the id exists
-        const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.body.admin_id]);
+        let admin_id;
+        if (req.body.admin_id) {
+            const admin = await client.query(`SELECT * FROM admin WHERE id = $1`, [req.body.admin_id]);
 
-        if (!admin.rows) {
-            throw({ message: 'This admin was not found!', status: 404 });
+            if (!admin.rows) {
+                throw({ message: 'This admin was not found!', status: 404 });
+            }
+
+            admin_id = req.body.admin_id;
         }
 
         const {latitude, longitude} = checkLatLon(req.body.latitude, req.body.longitude);
@@ -85,8 +89,9 @@ async function updatePlace(req, res, next) {
                 elevation_meters = $8,
                 polygon = $9,
                 wikidata_id = $10,
+                admin_id = $11,
                 updated = NOW()
-            WHERE id = $11`, [
+            WHERE id = $12`, [
                 req.body.country_id,
                 latitude,
                 longitude,
@@ -97,6 +102,7 @@ async function updatePlace(req, res, next) {
                 elevation_meters,
                 polygon,
                 wikidata_id,
+                admin_id,
                 req.body.place_id
             ]);
 

@@ -83,7 +83,7 @@ CREATE TABLE "place" (
   "polygon" text,
   "wikidata_id" varchar(20),
   "timezone" varchar(40),
-  "admin_id" varchar(6) NOT NULL,
+  "admin_id" varchar(6),
   "country_id" varchar(4) NOT NULL
 );
 
