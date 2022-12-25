@@ -1,3 +1,4 @@
+import fetch from "node-fetch";
 import { getClient } from "../../database/connection.js";
 
 async function getGithubAuth(req, res, next) {
@@ -26,7 +27,7 @@ async function getGithubAuth(req, res, next) {
         await client.query('COMMIT');
 
         // redirect to the frontend
-        res.redirect(`${process.env.FRONTEND_URL}/auth/github?access_token=${response.access_token}&user_id=${user.id}`);
+        res.redirect(`${process.env.FRONTEND_URL}/auth/github?access_token=${response.access_token}`);
     } catch (error) {
         next(error);
     } finally {
