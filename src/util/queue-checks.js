@@ -53,3 +53,35 @@ export function checkAddingPlace(place) {
         throw(error);
     }
 }
+
+export function checkTranslation(translation) {
+    try {       
+        const v = new Validator();
+
+        const schema = {
+            "type": "object",
+            "properties": {
+                "name": { 
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "required": true
+                },
+                "language_code": { 
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 5,
+                    "required": true
+                }
+            }
+        }
+
+        const result = v.validate(translation, schema);
+
+        if (result.errors.length > 0) {
+            throw({ message: 'requestObject is not valid', status: 400 });
+        }
+    } catch (error) {
+        throw(error);
+    }
+}

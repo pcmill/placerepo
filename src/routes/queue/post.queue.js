@@ -1,4 +1,5 @@
 import { getClient } from "../../database/connection.js";
+import { checkToken } from "../../util/auth.js";
 import { checkAddingPlace } from "../../util/queue-checks.js";
 
 async function addQueue(req, res, next) {
@@ -52,34 +53,6 @@ async function addQueue(req, res, next) {
     } finally {
         client.release();
     }
-}
-
-async function checkToken(token) {
-    try {
-        if (token) {
-            const response = await fetch(`https://api.github.com/applications/${process.env.GITHUB_OAUTH_CLIENT_ID}/token`, {
-                body: JSON.stringify({
-                    access_token: token
-                }),
-                headers: {
-                    'Accept': 'application/vnd.github+json',
-                    'Authorization': `Basic ${Buffer.from(process.env.GITHUB_OAUTH_CLIENT_ID + ':' + process.env.GITHUB_OAUTH_CLIENT_SECRET).toString('base64')}`,
-                    'X-GitHub-Api-Version': '2022-11-28'
-                },
-                method: 'POST'
-            });
-    
-            if (response.status === 200) {
-                const json = await response.json();
-    
-                return json.user;
-            }
-        }
-
-        throw({ message: 'Invalid token', status: 401 });
-    } catch (error) {
-        throw(error);
-    }   
 }
 
 export default addQueue;

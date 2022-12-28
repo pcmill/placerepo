@@ -29,6 +29,8 @@ import updatePlace from './routes/place/put.place.js';
 import updatePlaceTranslation from './routes/place/put.place.translation.js';
 import getQueue from './routes/queue/get.queue.js';
 import addQueue from './routes/queue/post.queue.js';
+import updateStatusQueue from './routes/queue/status.queue.js';
+
 const router = express.Router();
 
 // CONTINENT
@@ -57,20 +59,20 @@ router.post('/country', checkApiKey, (req, res, next) => {
     addCountry(req, res, next);
 });
 
-router.post('/country/translation', checkApiKey, (req, res, next) => {
-    addCountryTranslation(req, res, next);
-});
-
-router.put('/country/translation', checkApiKey, (req, res, next) => {
-    updateCountryTranslation(req, res, next);
-});
-
 router.get('/country/:id', (req, res, next) => {
     getCountry(req, res, next);
 });
 
 router.get('/country', (req, res, next) => {
     getCountries(req, res, next);
+});
+
+router.post('/country/translation', checkApiKey, (req, res, next) => {
+    addCountryTranslation(req, res, next);
+});
+
+router.put('/country/translation', checkApiKey, (req, res, next) => {
+    updateCountryTranslation(req, res, next);
 });
 
 router.delete('/country/translation/:id', checkApiKey, (req, res, next) => {
@@ -143,6 +145,10 @@ router.get('/queue', (req, res, next) => {
 
 router.post('/queue', (req, res, next) => {
     addQueue(req, res, next);
+});
+
+router.post('/queue/status/:id', (req, res, next) => {
+    updateStatusQueue(req, res, next);
 });
 
 // Github Auth
