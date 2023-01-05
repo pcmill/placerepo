@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 export async function checkToken(token) {
     return new Promise(async (resolve, reject) => {
         try {

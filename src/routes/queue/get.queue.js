@@ -6,9 +6,16 @@ async function getQueue(req, res, next) {
     try {
         // check if the id exists
         const queue = await client.query(`
-            SELECT q.id, q.request, q.created, q.request_type, c.github_user_name, c.github_avatar
+            SELECT q.id, q.request, q.created, q.request_type, c.github_user_name, c.github_avatar, pt.name AS place_name, l.description AS language, adt."name" AS admin_name, ct."name" AS country_name
             FROM queue AS q
             INNER JOIN contributor AS c ON c.github_user_id = q.user_id
+            LEFT JOIN language AS l ON q.request ->> 'language_code' = l.language_code
+            LEFT JOIN place AS p ON p.id = q.request ->> 'place_id'
+            LEFT JOIN place_translation AS pt ON pt.id = p.default_translation
+            LEFT JOIN admin AS a ON a.id = q.request ->> 'admin_id'
+            LEFT JOIN admin_translation AS adt ON adt.id = a.default_translation
+            LEFT JOIN country AS co ON co.id = q.request ->> 'country_id'
+            LEFT JOIN country_translation AS ct ON ct.id = co.default_translation
             WHERE status = $1
         `, [0]);
 

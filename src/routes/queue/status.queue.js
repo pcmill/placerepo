@@ -39,22 +39,21 @@ async function updateStatusQueue(req, res, next) {
             throw({ message: 'You are not allowed to do this!', status: 401 });
         }
 
-        if (task.rows[0].request_type === 'add_place' && req.body.status === 1) {
-            const result = await fetch(`${process.env.BACKEND_URL}/v1/place`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-api-key': process.env.APIKEY
-                },
-                body: JSON.stringify(task.rows[0].request)
-            });
+        if (req.body.status === 1) {
+            if (task.rows[0].request_type === 'add_place') {
+                await sendRequest('/v1/place', 'POST', task.rows[0].request);
+            }
 
-            const json = await result.json();
+            if (task.rows[0].request_type === 'update_place') {
+                await sendRequest('/v1/place', 'PUT', task.rows[0].request);
+            }
 
-            console.log(json);
+            if (task.rows[0].request_type === 'add_place_translation') {
+                await sendRequest('/v1/place/translation', 'POST', task.rows[0].request);
+            }
 
-            if (result.status !== 201) {
-                throw({ message: 'Something went wrong', status: 500 });
+            if (task.rows[0].request_type === 'update_place_translation') {
+                await sendRequest('/v1/place/translation', 'PUT', task.rows[0].request);
             }
         }
 
@@ -74,6 +73,34 @@ async function updateStatusQueue(req, res, next) {
     } finally {
         client.release();
     }
+}
+
+async function sendRequest(endpoint, method, request) {
+    console.log(endpoint, method, request);
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await fetch(`${process.env.BACKEND_URL}${endpoint}`, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.APIKEY
+                },
+                body: JSON.stringify(request)
+            });
+
+            console.log(result);
+            const json = await result.json();
+            console.log(json);
+
+            if (result.status !== 201) {
+                throw({ message: 'Something went wrong', status: 500 });
+            }
+
+            resolve();
+        } catch (error) {
+            reject(error);
+        }
+    });
 }
 
 export default updateStatusQueue;
