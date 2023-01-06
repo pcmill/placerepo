@@ -60,12 +60,24 @@ async function updateStatusQueue(req, res, next) {
                 await sendRequest('/v1/country/translation', 'POST', task.rows[0].request);
             }
 
+            if (task.rows[0].request_type === 'update_country_translation') {
+                await sendRequest('/v1/country/translation', 'PUT', task.rows[0].request);
+            }
+
             if (task.rows[0].request_type === 'add_continent_translation') {
                 await sendRequest('/v1/continent/translation', 'POST', task.rows[0].request);
             }
 
+            if (task.rows[0].request_type === 'update_continent_translation') {
+                await sendRequest('/v1/continent/translation', 'PUT', task.rows[0].request);
+            }
+
             if (task.rows[0].request_type === 'add_admin_translation') {
                 await sendRequest('/v1/admin/translation', 'POST', task.rows[0].request);
+            }
+
+            if (task.rows[0].request_type === 'update_admin_translation') {
+                await sendRequest('/v1/admin/translation', 'PUT', task.rows[0].request);
             }
         }
 
@@ -88,7 +100,6 @@ async function updateStatusQueue(req, res, next) {
 }
 
 async function sendRequest(endpoint, method, request) {
-    console.log(endpoint, method, request);
     return new Promise(async (resolve, reject) => {
         try {
             const result = await fetch(`${process.env.BACKEND_URL}${endpoint}`, {
@@ -100,11 +111,7 @@ async function sendRequest(endpoint, method, request) {
                 body: JSON.stringify(request)
             });
 
-            console.log(result);
-            const json = await result.json();
-            console.log(json);
-
-            if (result.status !== 201) {
+            if (result.status !== 201 && result.status !== 200) {
                 throw({ message: 'Something went wrong', status: 500 });
             }
 

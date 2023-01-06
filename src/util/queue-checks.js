@@ -125,3 +125,34 @@ export function checkTranslation(translation) {
         throw(error);
     }
 }
+
+export function checkUpdateTranslation(translation) {
+    try {       
+        const v = new Validator();
+
+        const schema = {
+            "type": "object",
+            "properties": {
+                "name": { 
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "required": true
+                },
+                "translation_id": {
+                    "type": "string",
+                    "minLength": 12,
+                    "maxLength": 12
+                }
+            }
+        }
+
+        const result = v.validate(translation, schema);
+
+        if (result.errors.length > 0) {
+            throw({ message: 'requestObject is not valid', status: 400 });
+        }
+    } catch (error) {
+        throw(error);
+    }
+}

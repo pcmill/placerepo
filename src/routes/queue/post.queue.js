@@ -1,6 +1,6 @@
 import { getClient } from "../../database/connection.js";
 import { checkToken } from "../../util/auth.js";
-import { checkPlace, checkTranslation } from "../../util/queue-checks.js";
+import { checkPlace, checkTranslation, checkUpdateTranslation } from "../../util/queue-checks.js";
 
 async function addQueue(req, res, next) {
     const client = await getClient();
@@ -35,15 +35,16 @@ async function addQueue(req, res, next) {
             checkPlace(req.body.changeRequest.requestObject);
         } else if (
             type === 'add_place_translation' || 
-            type === 'update_place_translation' ||
             type === 'add_continent_translation' ||
-            type === 'update_continent_translation' ||
             type === 'add_country_translation' ||
-            type === 'update_country_translation' ||
-            type === 'add_admin_translation' ||
-            type === 'update_admin_translation'
-        ) {
+            type === 'add_admin_translation') {
             checkTranslation(req.body.changeRequest.requestObject);
+        } else if (
+            type === 'update_place_translation' ||                
+            type === 'update_continent_translation' ||
+            type === 'update_country_translation' ||
+            type === 'update_admin_translation') {
+            checkUpdateTranslation(req.body.changeRequest.requestObject);
         } else {
             throw({ message: 'Invalid type', status: 400 });
         }
