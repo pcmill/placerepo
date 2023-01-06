@@ -55,6 +55,18 @@ async function updateStatusQueue(req, res, next) {
             if (task.rows[0].request_type === 'update_place_translation') {
                 await sendRequest('/v1/place/translation', 'PUT', task.rows[0].request);
             }
+
+            if (task.rows[0].request_type === 'add_country_translation') {
+                await sendRequest('/v1/country/translation', 'POST', task.rows[0].request);
+            }
+
+            if (task.rows[0].request_type === 'add_continent_translation') {
+                await sendRequest('/v1/continent/translation', 'POST', task.rows[0].request);
+            }
+
+            if (task.rows[0].request_type === 'add_admin_translation') {
+                await sendRequest('/v1/admin/translation', 'POST', task.rows[0].request);
+            }
         }
 
         await client.query(`

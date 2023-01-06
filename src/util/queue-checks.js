@@ -7,12 +7,6 @@ export function checkPlace(place) {
         const schema = {
             "type": "object",
             "properties": {
-                "name": { 
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 128,
-                    "required": true
-                },
                 "admin_id": { 
                     "type": "string",
                     "length": 6,
@@ -38,11 +32,10 @@ export function checkPlace(place) {
                 "language_code": { 
                     "type": "string",
                     "minLength": 2,
-                    "maxLength": 5,
-                    "required": true
+                    "maxLength": 5
                 },
                 "timezone": {
-                    "type": "string",
+                    "type": ["string", "null"]
                 },
                 "population": {
                     "type": "number",
@@ -63,10 +56,10 @@ export function checkPlace(place) {
                     "maximum": 10000
                 },
                 "polygon": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 },
                 "wikidata_id": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 }
             }
         }
