@@ -17,7 +17,7 @@ The goal is to be either:
 
 ### Why not Geonames?
 
-Geonames is awesome! But it takes quite some work for the data to be inserted in a relational database. After this it is also harder to keep your data synced up with the updates that are happening in Geonames. It also does not include translations of continents, countries and neighbourhoods.
+Geonames is awesome! But it takes quite some work for the data to be inserted in a relational database. After this it is also harder to keep your data synced up with the updates that are happening in Geonames.
 
 Placerepo does not contain all the entities that [Geonames supports](https://www.geonames.org/export/codes.html) such as mountain ranges, ports, rivers and all the other types of geo data. I think that focussing will help the quality of the dataset at least in the beginning.
 
