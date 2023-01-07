@@ -7,10 +7,9 @@ export function checkPlace(place) {
         const schema = {
             "type": "object",
             "properties": {
-                "admin_id": { 
-                    "type": "string",
+                "admin_id": {
+                    "type": ["string", "null"],
                     "length": 6,
-                    "required": true
                 },
                 "country_id": { 
                     "type": "string",
