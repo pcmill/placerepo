@@ -34,7 +34,7 @@ async function updateAdminTranslation(req, res, next) {
 
         await client.query(`
             UPDATE admin_translation
-            SET name = $1, language_code = $2, updated = NOW()
+            SET name = $1, language_code = $2, updated = timezone('UTC', NOW())
             WHERE id = $3`, [req.body.name, req.body.language_code, req.body.translation_id]);
 
         await client.query('COMMIT');

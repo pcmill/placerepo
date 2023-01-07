@@ -23,7 +23,7 @@ async function updatePlaceTranslation(req, res, next) {
 
         await client.query(`
             UPDATE place_translation
-            SET name = $1, updated = NOW()
+            SET name = $1, updated = timezone('UTC', NOW())
             WHERE id = $2`, [req.body.name, req.body.translation_id]);
 
         await client.query('COMMIT');

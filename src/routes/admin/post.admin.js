@@ -54,11 +54,11 @@ async function addAdmin(req, res, next) {
 
         await client.query(`
             INSERT INTO admin${level}(id, country_id, latitude, longitude, admin_id, created)
-            VALUES($1, $2, $3, $4, $5, NOW())`, [adminId, req.body.country_id, latitude, longitude, req.body.admin_id]);
+            VALUES($1, $2, $3, $4, $5, timezone('UTC', NOW()))`, [adminId, req.body.country_id, latitude, longitude, req.body.admin_id]);
         
         await client.query(`
             INSERT INTO admin_translation(id, name, language_code, admin_id, created)
-            VALUES($1, $2, $3, $4, NOW())`, [translationId, req.body.name, req.body.language_code, adminId]);
+            VALUES($1, $2, $3, $4, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code, adminId]);
         
         await client.query(`
             INSERT INTO admin_to_translation(admin_id, translation_id)

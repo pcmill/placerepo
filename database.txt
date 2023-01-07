@@ -1,8 +1,8 @@
 table continent {
   id varchar(2) [PK, unique]
   default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
 }
 
 table continent_to_translation {
@@ -14,8 +14,8 @@ table continent_to_translation {
 table continent_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   language_code varchar(5) [not null]
 }
 
@@ -23,8 +23,8 @@ table country {
   id varchar(4) [PK, unique]
   default_translation varchar(12)
   admin_levels integer
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   country_code varchar(2) [not null]
   continent_id varchar(2) [not null]
 }
@@ -38,16 +38,16 @@ table country_to_translation {
 table country_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   language_code varchar(5) [unique, not null]
 }
 
 table admin {
   id varchar(6) [PK, unique]
   default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text
@@ -64,16 +64,16 @@ table admin_to_translation {
 table admin_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   language_code varchar(5) [not null]
 }
 
 table place {
   id varchar(8) [PK, unique]
   default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   population integer
@@ -96,16 +96,16 @@ table place_to_translation {
 table place_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   language_code varchar(5) [not null]
 }
 
 table neighbourhood {
   id varchar(10) [PK, unique]
   default_translation varchar(12)
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text
@@ -121,8 +121,8 @@ table neighbourhood_to_translation {
 table neighbourhood_translation {
   id varchar(12) [PK, unique]
   name varchar(128) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   population integer
   language_code varchar(5) [not null]
 }
@@ -130,8 +130,8 @@ table neighbourhood_translation {
 table postal_code {
   id varchar(10) [PK, unique]
   code varchar(20) [not null]
-  created timestamp [not null]
-  updated timestamp
+  created timestamptz [not null]
+  updated timestamptz
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text

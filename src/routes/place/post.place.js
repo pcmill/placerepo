@@ -59,7 +59,7 @@ async function addPlace(req, res, next) {
 
         await client.query(`
             INSERT INTO place(id, country_id, latitude, longitude, timezone, elevation_meters, admin_id, created)
-            VALUES($1, $2, $3, $4, $5, $6, $7, NOW())`, [
+            VALUES($1, $2, $3, $4, $5, $6, $7, timezone('UTC', NOW()))`, [
                 placeId, 
                 req.body.country_id, 
                 latitude, 
@@ -71,7 +71,7 @@ async function addPlace(req, res, next) {
         
         await client.query(`
             INSERT INTO place_translation(id, name, language_code, created)
-            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
+            VALUES($1, $2, $3, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code]);
 
         await client.query(`
             INSERT INTO place_to_translation(place_id, translation_id)

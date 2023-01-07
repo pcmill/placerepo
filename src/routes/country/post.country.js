@@ -45,11 +45,11 @@ async function addCountry(req, res, next) {
 
         await client.query(`
             INSERT INTO country_translation(id, name, language_code, created)
-            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
+            VALUES($1, $2, $3, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code]);
 
         await client.query(`
             INSERT INTO country(id, default_translation, country_code, continent_id, created)
-            VALUES($1,  $2, UPPER($3), $4, NOW())`, [countryId, translationId, req.body.country_code, req.body.continent_id]);
+            VALUES($1,  $2, UPPER($3), $4, timezone('UTC', NOW()))`, [countryId, translationId, req.body.country_code, req.body.continent_id]);
 
         await client.query(`
             INSERT INTO country_to_translation(country_id, translation_id)

@@ -54,7 +54,7 @@ async function addQueue(req, res, next) {
         // Status is 2 for rejected
         await client.query(`
             INSERT INTO queue(created, request, user_id, status, request_type)
-            VALUES(NOW(), $1, $2, $3, $4)`, [req.body.changeRequest.requestObject, user.id, 0, req.body.changeRequest.type]);
+            VALUES(timezone('UTC', NOW()), $1, $2, $3, $4)`, [req.body.changeRequest.requestObject, user.id, 0, req.body.changeRequest.type]);
 
         await client.query('COMMIT');
 

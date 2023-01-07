@@ -1,8 +1,8 @@
 CREATE TABLE "continent" (
   "id" varchar(2) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
-  "created" timestamp NOT NULL,
-  "updated" timestamp
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz
 );
 
 CREATE TABLE "continent_to_translation" (
@@ -14,8 +14,8 @@ CREATE TABLE "continent_to_translation" (
 CREATE TABLE "continent_translation" (
   "id" varchar(12) UNIQUE PRIMARY KEY,
   "name" varchar(128) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "language_code" varchar(5) NOT NULL
 );
 
@@ -23,8 +23,8 @@ CREATE TABLE "country" (
   "id" varchar(4) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
   "admin_levels" integer,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "country_code" varchar(2) NOT NULL,
   "continent_id" varchar(2) NOT NULL
 );
@@ -38,16 +38,16 @@ CREATE TABLE "country_to_translation" (
 CREATE TABLE "country_translation" (
   "id" varchar(12) UNIQUE PRIMARY KEY,
   "name" varchar(128) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "language_code" varchar(5) NOT NULL
 );
 
 CREATE TABLE "admin" (
   "id" varchar(6) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
@@ -64,16 +64,16 @@ CREATE TABLE "admin_to_translation" (
 CREATE TABLE "admin_translation" (
   "id" varchar(12) UNIQUE PRIMARY KEY,
   "name" varchar(128) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "language_code" varchar(5) NOT NULL
 );
 
 CREATE TABLE "place" (
   "id" varchar(8) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "population" integer,
@@ -96,16 +96,16 @@ CREATE TABLE "place_to_translation" (
 CREATE TABLE "place_translation" (
   "id" varchar(12) UNIQUE PRIMARY KEY,
   "name" varchar(128) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "language_code" varchar(5) NOT NULL
 );
 
 CREATE TABLE "neighbourhood" (
   "id" varchar(10) UNIQUE PRIMARY KEY,
   "default_translation" varchar(12),
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
@@ -121,8 +121,8 @@ CREATE TABLE "neighbourhood_to_translation" (
 CREATE TABLE "neighbourhood_translation" (
   "id" varchar(12) UNIQUE PRIMARY KEY,
   "name" varchar(128) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "population" integer,
   "language_code" varchar(5) NOT NULL
 );
@@ -130,8 +130,8 @@ CREATE TABLE "neighbourhood_translation" (
 CREATE TABLE "postal_code" (
   "id" varchar(10) UNIQUE PRIMARY KEY,
   "code" varchar(20) NOT NULL,
-  "created" timestamp NOT NULL,
-  "updated" timestamp,
+  "created" timestamptz NOT NULL,
+  "updated" timestamptz,
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,

@@ -90,7 +90,7 @@ async function updatePlace(req, res, next) {
                 polygon = $9,
                 wikidata_id = $10,
                 admin_id = $11,
-                updated = NOW()
+                updated = timezone('UTC', NOW())
             WHERE id = $12`, [
                 req.body.country_id,
                 latitude,

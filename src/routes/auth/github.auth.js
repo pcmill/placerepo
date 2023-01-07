@@ -21,7 +21,7 @@ async function getGithubAuth(req, res, next) {
             // create the user
             await client.query(`
                 INSERT INTO contributor (github_user_id, github_user_name, github_avatar, created)
-                VALUES ($1, $2, $3, NOW())`, [user.id, user.login, user.avatar_url]);
+                VALUES ($1, $2, $3, timezone('UTC', NOW()))`, [user.id, user.login, user.avatar_url]);
         }
 
         await client.query('COMMIT');

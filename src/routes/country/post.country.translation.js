@@ -34,7 +34,7 @@ async function addCountryTranslation(req, res, next) {
 
         await client.query(`
             INSERT INTO country_translation(id, name, language_code, created)
-            VALUES($1, $2, $3, NOW())`, [translationId, req.body.name, req.body.language_code]);
+            VALUES($1, $2, $3, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code]);
         
         await client.query(`
             INSERT INTO country_to_translation(country_id, translation_id)

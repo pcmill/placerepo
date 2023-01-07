@@ -83,7 +83,7 @@ async function updateStatusQueue(req, res, next) {
 
         await client.query(`
             UPDATE queue
-            SET status = $1, status_changed_on = NOW(), status_changed_by = $2
+            SET status = $1, status_changed_on = timezone('UTC', NOW()), status_changed_by = $2
             WHERE id = $3`, [req.body.status, user.id, req.params.id]);
 
         await client.query('COMMIT');
