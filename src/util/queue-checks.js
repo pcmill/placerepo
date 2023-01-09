@@ -7,26 +7,27 @@ export function checkPlace(place) {
         const schema = {
             "type": "object",
             "properties": {
+                "place_id": {
+                    "type": "string",
+                    "length": 8
+                },
                 "admin_id": {
                     "type": ["string", "null"],
                     "length": 6,
                 },
                 "country_id": { 
                     "type": "string",
-                    "length": 4,
-                    "required": true
+                    "length": 4
                 },
                 "latitude": { 
                     "type": "number",
                     "min": -90,
-                    "max": 90,
-                    "required": true
+                    "max": 90
                 },
                 "longitude": { 
                     "type": "number",
                     "min": -180,
-                    "max": 180,
-                    "required": true
+                    "max": 180
                 },
                 "language_code": { 
                     "type": "string",

@@ -53,7 +53,7 @@ async function addAdmin(req, res, next) {
         }
 
         await client.query(`
-            INSERT INTO admin${level}(id, country_id, latitude, longitude, admin_id, created)
+            INSERT INTO admin(id, country_id, latitude, longitude, admin_id, created)
             VALUES($1, $2, $3, $4, $5, timezone('UTC', NOW()))`, [adminId, req.body.country_id, latitude, longitude, req.body.admin_id]);
         
         await client.query(`
@@ -65,7 +65,7 @@ async function addAdmin(req, res, next) {
             VALUES($1, $2)`, [adminId, translationId]);
 
         await client.query(`
-            UPDATE admin${level}
+            UPDATE admin
             SET default_translation = $1
             WHERE id = $2`, [translationId, adminId]);
 

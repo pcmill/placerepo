@@ -7,10 +7,7 @@ async function updatePlace(req, res, next) {
 
     try {
         if (!req.body ||
-            !req.body.place_id ||
-            !req.body.country_id || 
-            !req.body.latitude || 
-            !req.body.longitude) {
+            !req.body.place_id) {
             throw({ message: 'Missing stuff', status: 400 });
         }
 
@@ -21,13 +18,6 @@ async function updatePlace(req, res, next) {
 
         if (!place.rows) {
             throw({ message: 'This place was not found!', status: 404 });
-        }
-
-        // check if the id exists
-        const country = await client.query(`SELECT * FROM country WHERE id = $1`, [req.body.country_id]);
-
-        if (!country.rows) {
-            throw({ message: 'This country was not found!', status: 404 });
         }
 
         // check if the id exists
@@ -42,9 +32,14 @@ async function updatePlace(req, res, next) {
             admin_id = req.body.admin_id;
         }
 
-        const {latitude, longitude} = checkLatLon(req.body.latitude, req.body.longitude);
+        let latitude, longitude, timezone;
+        if (req.body.latitude && req.body.longitude) {
+            const latlon = checkLatLon(req.body.latitude, req.body.longitude);
 
-        const timezone = await getTimezone(latitude, longitude);
+            latitude = latlon.latitude;
+            longitude = latlon.longitude;
+            timezone = await getTimezone(latitude, longitude);
+        }
 
         let population;
         if (req.body.population) {
@@ -76,35 +71,82 @@ async function updatePlace(req, res, next) {
             wikidata_id = checkWikidataId(req.body.wikidata_id);
         }
 
+        if (req.body.population &&
+            req.body.population_record_year) {
+            await client.query(`
+                UPDATE place
+                SET
+                    population = $1,
+                    population_approximate = $2,
+                    population_record_year = $3
+                WHERE id = $4`, [
+                    population,
+                    population_approximate,
+                    population_record_year,
+                    req.body.place_id
+                ]
+            );
+        }
+
+        if (req.body.polygon) {
+            await client.query(`
+                UPDATE place
+                SET
+                    polygon = $1
+                WHERE id = $2`, [
+                    polygon,
+                    req.body.place_id
+                ]
+            );
+        }
+
+        if (req.body.wikidata_id) {
+            await client.query(`
+                UPDATE place
+                SET
+                    wikidata_id = $1
+                WHERE id = $2`, [
+                    wikidata_id,
+                    req.body.place_id
+                ]
+            );
+        }
+      
+        if (req.body.latitude && req.body.longitude) {
+            await client.query(`
+                UPDATE place
+                SET
+                    latitude = $1,
+                    longitude = $2,
+                    timezone = $3
+                WHERE id = $4`, [
+                    latitude,
+                    longitude,
+                    timezone,
+                    req.body.place_id
+                ]
+            );
+        }
+    
+        if (req.body.admin_id) {
+            await client.query(`
+                UPDATE place
+                SET
+                    admin_id = $1
+                WHERE id = $2`, [
+                    admin_id,
+                    req.body.place_id
+                ]
+            );
+        }
+
         await client.query(`
             UPDATE place
             SET
-                country_id = $1,
-                latitude = $2,
-                longitude = $3,
-                timezone = $4,
-                population = $5,
-                population_approximate = $6,
-                population_record_year = $7,
-                elevation_meters = $8,
-                polygon = $9,
-                wikidata_id = $10,
-                admin_id = $11,
                 updated = timezone('UTC', NOW())
-            WHERE id = $12`, [
-                req.body.country_id,
-                latitude,
-                longitude,
-                timezone,
-                population,
-                population_approximate,
-                population_record_year,
-                elevation_meters,
-                polygon,
-                wikidata_id,
-                admin_id,
+            WHERE id = $1`, [
                 req.body.place_id
-            ]);
+        ]);
 
         await client.query('COMMIT');
 
