@@ -29,7 +29,7 @@ async function getBoundingBox(req, res, next) {
         const area = (southEast[1] - northWest[1]) * (southEast[0] - northWest[0]);
 
         let query = '';
-        if (area < 0.05) {
+        if (area < 0.25) {
             query = `
                 SELECT p.id, pt.name, p.latitude, p.longitude, p.population, p.polygon
                 FROM place AS p
