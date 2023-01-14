@@ -17,13 +17,25 @@ async function getPlace(req, res, next) {
                 at."name" AS "admin_1_name",
                 
                 a2.id AS "admin_2_id",
-                at2."name" AS "admin_2_name"
+                at2."name" AS "admin_2_name",
+
+                a3.id AS "admin_3_id",
+                at3."name" AS "admin_3_name",
+
+                a4.id AS "admin_4_id",
+                at4."name" AS "admin_4_name"
             FROM place AS p
             LEFT JOIN admin AS a ON a.id = p.admin_id
             LEFT JOIN admin_translation AS at ON at.id = a.default_translation
             
             LEFT JOIN admin AS a2 ON a2.id = a.admin_id
             LEFT JOIN admin_translation AS at2 ON at2.id = a2.default_translation
+
+            LEFT JOIN admin AS a3 ON a3.id = a2.admin_id
+            LEFT JOIN admin_translation AS at3 ON at3.id = a3.default_translation
+
+            LEFT JOIN admin AS a4 ON a4.id = a3.admin_id
+            LEFT JOIN admin_translation AS at4 ON at4.id = a4.default_translation
             WHERE p.id = $1
         `, [req.params.id]);
 
