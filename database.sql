@@ -51,6 +51,7 @@ CREATE TABLE "admin" (
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
+  "polygon_type" smallint DEFAULT 0,
   "country_id" varchar(4) NOT NULL,
   "admin_id" varchar(6)
 );
@@ -81,6 +82,7 @@ CREATE TABLE "place" (
   "population_record_year" smallint,
   "elevation_meters" integer NOT NULL,
   "polygon" text,
+  "polygon_type" smallint DEFAULT 0,
   "wikidata_id" varchar(20),
   "timezone" varchar(40),
   "admin_id" varchar(6),
@@ -109,6 +111,7 @@ CREATE TABLE "neighbourhood" (
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
+  "polygon_type" smallint DEFAULT 0,
   "place_id" varchar(8) NOT NULL
 );
 
@@ -135,6 +138,7 @@ CREATE TABLE "postal_code" (
   "latitude" decimal(8,4) NOT NULL,
   "longitude" decimal(9,4) NOT NULL,
   "polygon" text,
+  "polygon_type" smallint DEFAULT 0,
   "country_id" varchar(4) NOT NULL
 );
 

@@ -51,6 +51,7 @@ table admin {
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text
+  polygon_type smallint
   country_id varchar(4) [not null]
   admin_id varchar(6)
 }
@@ -81,6 +82,7 @@ table place {
   population_record_year smallint
   elevation_meters integer [not null]
   polygon text
+  polygon_type smallint
   wikidata_id varchar(20)
   timezone varchar(40)
   admin_id varchar(6)
@@ -109,6 +111,7 @@ table neighbourhood {
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text
+  polygon_type smallint
   place_id varchar(8) [not null]
 }
 
@@ -135,6 +138,7 @@ table postal_code {
   latitude decimal(8,4) [not null]
   longitude decimal(9,4) [not null]
   polygon text
+  polygon_type smallint
   country_id varchar(4) [not null]
 }
 
