@@ -45,8 +45,10 @@ if (process.env.NODE_ENV != 'test') {
 }
 
 // Start the cronjobs for generating the CSV files
-cron.schedule('0 20 * * 6', async () => {
-    await generateCSV();
-});
+if (process.env.NODE_ENV === 'production') {
+    cron.schedule('0 20 * * 6', async () => {
+        await generateCSV();
+    });
+}
 
 export default app;

@@ -154,6 +154,4 @@ async function generateCSV() {
     }
 };
 
-generateCSV();
-
 export default generateCSV;
