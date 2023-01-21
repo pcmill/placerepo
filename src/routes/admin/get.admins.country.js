@@ -22,6 +22,7 @@ async function getAdminsByCountry(req, res, next) {
         }
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send(admins);
     } catch (error) {
         console.log(error);

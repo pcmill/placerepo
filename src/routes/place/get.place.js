@@ -53,6 +53,7 @@ async function getPlace(req, res, next) {
         `, [req.params.id]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send({
             ...place.rows[0],
             ...admins.rows[0],

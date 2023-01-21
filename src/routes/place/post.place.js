@@ -1,4 +1,5 @@
 import { getClient } from "../../database/connection.js";
+import { getElevation } from "../../util/elevation.js";
 import { checkLatLon } from "../../util/latlon.js";
 import { randomId } from "../../util/random.js";
 import { getTimezone } from "../../util/timezone.js";
@@ -56,6 +57,7 @@ async function addPlace(req, res, next) {
         }
 
         const timezone = await getTimezone(latitude, longitude);
+        const elevation_meters = await getElevation(latitude, longitude);
 
         await client.query(`
             INSERT INTO place(id, country_id, latitude, longitude, timezone, elevation_meters, admin_id, created)
@@ -64,8 +66,8 @@ async function addPlace(req, res, next) {
                 req.body.country_id, 
                 latitude, 
                 longitude,
-                timezone, 
-                0,
+                timezone,
+                elevation_meters,
                 req.body.admin_id
             ]);
         

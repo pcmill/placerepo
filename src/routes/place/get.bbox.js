@@ -54,6 +54,7 @@ async function getBoundingBox(req, res, next) {
         const places = await client.query(query, [northWest[0], southEast[0], northWest[1], southEast[1]]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send({
             places: places.rows
         });

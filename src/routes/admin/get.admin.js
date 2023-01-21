@@ -25,6 +25,7 @@ async function getAdmin(req, res, next) {
         `, [req.params.id]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send({
             ...admin.rows[0],
             country_name: country.rows[0].name,

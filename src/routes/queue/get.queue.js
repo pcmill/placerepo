@@ -39,6 +39,7 @@ async function getQueue(req, res, next) {
         `, [0]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=30');
         res.send([
             ...queue.rows
         ]);

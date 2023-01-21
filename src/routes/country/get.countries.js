@@ -13,6 +13,7 @@ async function getCountries(req, res, next) {
         }
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send(countries);
     } catch (error) {
         next(error);

@@ -25,6 +25,7 @@ async function getCountry(req, res, next) {
         `, [req.params.id]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send({
             ...country.rows[0],
             continent_name: continent.rows[0].name,

@@ -1,15 +1,20 @@
 import { getClient } from "../../database/connection.js";
 
-async function getLanguages(req, res, next) {
+async function getDownload(req, res, next) {
     const client = await getClient();
     
     try {
-        // check if the id exists
-        const languages = await client.query(`SELECT * FROM language`);
+        const download = await client.query(`
+            SELECT * 
+            FROM download
+            ORDER BY created DESC
+            LIMIT 2`);
 
         res.status(200);
         res.set('Cache-contol', 'public, max-age=3600');
-        res.send(languages.rows);
+        res.send([
+            ...download.rows
+        ]);
     } catch (error) {
         next(error);
     } finally {
@@ -17,4 +22,4 @@ async function getLanguages(req, res, next) {
     }
 }
 
-export default getLanguages;
+export default getDownload;

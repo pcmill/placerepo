@@ -19,6 +19,7 @@ import getCountry from './routes/country/get.country.js';
 import addCountry from './routes/country/post.country.js';
 import addCountryTranslation from './routes/country/post.country.translation.js';
 import updateCountryTranslation from './routes/country/put.country.translation.js';
+import getDownload from './routes/download/get.download.js';
 import getLanguages from './routes/language/get.languages.js';
 import removePlaceTranslation from './routes/place/delete.place.translation.js';
 import getBoundingBox from './routes/place/get.bbox.js';
@@ -136,6 +137,10 @@ router.put('/admin/translation', (req, res, next) => {
 // OTHER
 router.get('/language', (req, res, next) => {
     getLanguages(req, res, next);
+});
+
+router.get('/download', (req, res, next) => {
+    getDownload(req, res, next);
 });
 
 // QUEUE

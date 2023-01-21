@@ -20,6 +20,7 @@ async function getContinent(req, res, next) {
         `, [req.params.id]);
 
         res.status(200);
+        res.set('Cache-contol', 'public, max-age=60');
         res.send({
             ...continent.rows[0],
             translations: translations.rows
