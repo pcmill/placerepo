@@ -8,10 +8,10 @@ export async function getElevation(latitude, longitude) {
 
             if (result.ok && data && data.results && data.results[0].elevation) {
                 resolve(data.results[0].elevation);
+            } else {
+                console.log('No elevation found for', latitude, longitude);
+                resolve(0);
             }
-
-            console.log('No elevation found for', latitude, longitude);
-            resolve(0);
         } catch (error) {
             reject(error);
         }
