@@ -75,11 +75,11 @@ async function generateCSV() {
             console.log('Writing to file...');
 
             // Write the header to the csv
-            file.write(Object.keys(result.rows[0]).join('\t') + '\n');
+            file.write(Object.keys(result.rows[0]).join(',') + '\n');
 
             // Write the rows to the csv
             result.rows.forEach(row => {
-                file.write(Object.values(row).join('\t') + '\n');
+                file.write(Object.values(row).join(',') + '\n');
             });
 
             file.on('error', (e) => {
