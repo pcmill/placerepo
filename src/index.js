@@ -1,18 +1,20 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import cron from 'node-cron';
 const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
+    dotenv.config();
 }
 
 const port = process.env.PORT || 8881;
 import routes from './routes.js';
+import generateCSV from './jobs/generate-csv.js';
 
 const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200,
+    origin: '*',
+    optionsSuccessStatus: 200,
 }
 
 // configure bodyParser
@@ -28,9 +30,9 @@ app.use('/v1', routes);
 
 // Error handler
 app.use(function (err, req, res, next) {
-  // render the error page
-  console.log(err);
-  res.status(err.status || 500).send(err);
+    // render the error page
+    console.log(err);
+    res.status(err.status || 500).send(err);
 });
 
 // Start our server
@@ -41,5 +43,10 @@ if (process.env.NODE_ENV != 'test') {
         console.log(`Server started on port ${port}`);
     });
 }
+
+// Start the cronjobs for generating the CSV files
+cron.schedule('0 20 * * 6', async () => {
+    await generateCSV();
+});
 
 export default app;
