@@ -57,8 +57,8 @@ async function addAdmin(req, res, next) {
             VALUES($1, $2, $3, $4, $5, timezone('UTC', NOW()))`, [adminId, req.body.country_id, latitude, longitude, req.body.admin_id]);
         
         await client.query(`
-            INSERT INTO admin_translation(id, name, language_code, admin_id, created)
-            VALUES($1, $2, $3, $4, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code, adminId]);
+            INSERT INTO admin_translation(id, name, language_code, created)
+            VALUES($1, $2, $3, timezone('UTC', NOW()))`, [translationId, req.body.name, req.body.language_code]);
         
         await client.query(`
             INSERT INTO admin_to_translation(admin_id, translation_id)
