@@ -13,13 +13,22 @@ async function getAdminsByAdmin(req, res, next) {
             throw({ message: 'This admin was not found!', status: 404 });
         }
 
-        const admins = await getAdminsByDefault(id, client);    
+        const admins = await getAdminsByDefault(id, client);
+        
+        const adminDetails = await client.query(`
+            SELECT a.polygon_type, a.polygon, adt.name AS label
+            FROM admin AS a
+            INNER JOIN admin_translation AS adt ON adt.id = a.default_translation
+            WHERE a.id = $1
+        `, [id]);
 
         res.status(200);
         res.set('Cache-contol', 'public, max-age=60');
-        res.send(admins);
+        res.send({
+            details: adminDetails.rows[0],
+            admins
+        });
     } catch (error) {
-        console.log(error);
         next(error);
     } finally {
         client.release();
@@ -29,7 +38,7 @@ async function getAdminsByAdmin(req, res, next) {
 async function getAdminsByDefault(id, client) {
     return new Promise(async (resolve, reject) => {
         try {
-            const countries = await client.query(`
+            const admins = await client.query(`
                 SELECT a.id, adt.name, ct.name AS "country", COUNT(adc.id) AS "translations"
                 FROM admin AS a
                 INNER JOIN admin_to_translation AS att ON att.admin_id = a.id
@@ -42,7 +51,7 @@ async function getAdminsByDefault(id, client) {
                 ORDER BY adt.name
             `, [id]);
 
-            resolve(countries.rows);
+            resolve(admins.rows);
         } catch (error) {
             console.log(error);
             reject({ message: 'Could not get the admin list.'});
