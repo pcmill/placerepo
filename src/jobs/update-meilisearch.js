@@ -86,6 +86,8 @@ async function updateMeilisearch() {
 
                 const data = await res.json();
                 console.log(data);
+            } else {
+                console.log('No new data to update MeiliSearch with.');
             }
         });
     } catch (error) {
