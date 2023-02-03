@@ -11,6 +11,7 @@ if (process.env.NODE_ENV !== 'production') {
 const port = process.env.PORT || 8881;
 import routes from './routes.js';
 import generateCSV from './jobs/generate-csv.js';
+import updateMeilisearch from './jobs/update-meilisearch.js';
 
 const corsOptions = {
     origin: '*',
@@ -50,6 +51,12 @@ if (process.env.NODE_ENV === 'production') {
     
     cron.schedule('0 20 * * 6', async () => {
         await generateCSV();
+    });
+
+    console.log('Starting cronjob Meilisearch update');
+    
+    cron.schedule('30 * * * *', async () => {
+        await updateMeilisearch();
     });
 }
 
