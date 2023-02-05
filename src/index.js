@@ -45,27 +45,4 @@ if (process.env.NODE_ENV != 'test') {
     });
 }
 
-// Start the cronjobs for generating the CSV files
-if (process.env.NODE_ENV === 'production') {
-    try {
-        console.log('Starting cronjob CSV generation');
-
-        cron.schedule('0 20 * * 6', async () => {
-            await generateCSV();
-        });
-    } catch (error) {
-        console.log(error);
-    }
-
-    try {
-        console.log('Starting cronjob Meilisearch update');
-    
-        cron.schedule('*/30 * * * *', async () => {
-            await updateMeilisearch();
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 export default app;
